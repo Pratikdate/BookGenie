@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "772104365160",
+    "project_id": "pdfviewer-5026c",
+    "storage_bucket": "pdfviewer-5026c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772104365160:android:73f3d83332f71b926f87dd",
+        "android_client_info": {
+          "package_name": "com.example.bookapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_P4eJxLeJmzSv5Bk0PZl6NeWpBF8bS00"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
