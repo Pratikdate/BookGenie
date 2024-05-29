@@ -10,8 +10,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:path/path.dart';
-import '../Screens/ReadBook.dart';
+
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../core/SnapShotHandler.dart';
 import 'ReadBookController.dart';
 
@@ -30,7 +30,7 @@ class ChatScreenController extends GetxController {
   DateTime date = DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day);
 
   final String apiUrl = "https://api.chatpdf.com/v1/sources/add-file";
-  final Map<String, String> headers = {'x-api-key': 'sec_UF4cBRlukLSqvWOqbxIvLZs9pFPaKeGT'};
+  final Map<String, String> headers = {'x-api-key': dotenv.env["API_KEY"]!.toString()};
 
   //final ReadBookController controller = Get.put(ReadBookController());
 
@@ -213,7 +213,7 @@ class ChatScreenController extends GetxController {
     if (sourceID.isNotEmpty) {
       final String apiUrl = 'https://api.chatpdf.com/v1/chats/message';
       final Map<String, String> headers = {
-        'x-api-key': 'sec_UF4cBRlukLSqvWOqbxIvLZs9pFPaKeGT',
+        'x-api-key': dotenv.env["API_KEY"].toString(),
         'Content-Type': 'application/json',
       };
 

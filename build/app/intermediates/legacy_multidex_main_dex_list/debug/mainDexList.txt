@@ -316,6 +316,7 @@ com/google/protobuf/InlineMe.class
 io/flutter/FlutterInjector.class
 io/flutter/app/FlutterApplication.class
 io/flutter/embedding/engine/loader/FlutterLoader.class
+io/flutter/plugins/firebase/auth/GeneratedAndroidFirebaseAuth$CanIgnoreReturnValue.class
 io/grpc/CallOptions.class
 io/grpc/EquivalentAddressGroup$Attr.class
 io/grpc/ExperimentalApi.class
