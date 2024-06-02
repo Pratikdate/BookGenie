@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: FirebaseAuth.instance.currentUser!.isAnonymous?'/auth':'/home',
+      initialRoute:CheckUserStatus(),
       getPages: [
         GetPage(name: '/auth', page: () => AuthScreen()),
         GetPage(name: '/home', page: () => BookStore()),
@@ -41,6 +41,17 @@ class MyApp extends StatelessWidget {
       ],
     );
   }
+}
+
+
+String CheckUserStatus(){
+  try{
+    return FirebaseAuth.instance.currentUser!.isAnonymous ?'/auth':'/home';
+  }
+  catch( e){}
+
+  return '/auth';
+
 }
 
 

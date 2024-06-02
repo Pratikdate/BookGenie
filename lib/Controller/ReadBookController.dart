@@ -13,7 +13,7 @@ import 'package:file_picker/file_picker.dart';
 
 class ReadBookController extends GetxController with SingleGetTickerProviderMixin {
   final GlobalKey<SfPdfViewerState> pdfViewerKey = GlobalKey();
-  //final ScrollController scrollController = ScrollController();
+
   File? file;
   bool isFilePicked = false;
   Uint8List? bytes;
@@ -24,6 +24,7 @@ class ReadBookController extends GetxController with SingleGetTickerProviderMixi
   late SharedPreferences prefs;
   var isLoading = true.obs;
   static String fileUrl = '';
+  int? page;
 
   static String PDFFileBasename = '';
   late TabController _tabController;
@@ -32,8 +33,19 @@ class ReadBookController extends GetxController with SingleGetTickerProviderMixi
   void onInit() {
     super.onInit();
     _tabController = TabController(length: 2, vsync: this);
-    loadPage();
+    fetchPdfFromNetwork(fileUrl);
+
   }
+
+  void onClose() {
+    // TODO: implement onClose
+
+    prefs.setInt("Page_read", 0);
+    super.onClose();
+
+  }
+
+
 
   Future<void> fetchPdfFromNetwork(String url) async {
     isLoading.value = true;
@@ -61,16 +73,17 @@ class ReadBookController extends GetxController with SingleGetTickerProviderMixi
   Future<void> loadPage() async {
     prefs = await SharedPreferences.getInstance();
     if (file != null) {
-      int? page = prefs.getInt(basename(file!.path));
+      page = prefs.getInt("Page_read");
       if (page != null) {
-        pdfViewerController.jumpToPage(page);
+        pdfViewerController.jumpToPage(page!);
       }
     }
   }
 
   Future<void> savePage() async {
     if (file != null) {
-      prefs.setInt(basename(file!.path), pdfViewerController.pageNumber);
+      print('Inside save pagae ');
+      prefs.setInt("Page_read", pdfViewerController.pageNumber);
     }
   }
 

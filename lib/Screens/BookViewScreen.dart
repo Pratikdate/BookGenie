@@ -7,22 +7,25 @@ import 'package:path/path.dart';
 import '../Controller/ReadBookController.dart';
 
 class BookViewScreen extends StatelessWidget {
-  const BookViewScreen({super.key, required this.file});
+  BookViewScreen({super.key, required this.file});
   final String file;
+  final ReadBookController controller = Get.put(ReadBookController());
+
+
 
   @override
   Widget build(BuildContext context) {
-    final ReadBookController controller = Get.put(ReadBookController());
-
+    controller.loadPage();
     if (file.isNotEmpty) {
-      controller.fetchPdfFromNetwork(file);
+
+
       ReadBookController.PDFFileBasename = basename(file);
     }
 
     return Scaffold(
       body: Obx(() {
         if (controller.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (controller.isFilePicked || controller.file != null) {
           return SfPdfViewer.file(
             controller.file!,

@@ -43,7 +43,7 @@ class ChatScreenController extends GetxController {
   void onInit() {
     super.onInit();
     fetchUrlfromNetwork(bookUid);
-    _loadMessages();
+    //_loadMessages();
 
   }
 
@@ -53,7 +53,7 @@ class ChatScreenController extends GetxController {
   @override
   void onClose() {
     for (dynamic item in messages) {
-      _addMessageToFirestore(item);
+      //_addMessageToFirestore(item);
     }
     super.onClose();
   }
@@ -66,12 +66,10 @@ class ChatScreenController extends GetxController {
       http.get(Uri.parse("http://192.168.233.145:8000/api/extractBooks/"+pk));
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
-        print(body);
         fetchPdfFromNetwork(body['book_file']);
 
       } else {
-        print("else condition");
-        // Handle error
+
       }
     }catch(e){
       print(e);
@@ -97,12 +95,14 @@ class ChatScreenController extends GetxController {
       }
     } catch (e) {
       isLoading.value = false;
-      print("In catch section");
+
       rethrow;
     }
   }
 
 
+
+  //use in future
   void _loadMessages() async {
 
     try {

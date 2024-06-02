@@ -6,10 +6,14 @@ import '../Controller/BookStoreController.dart';
 class BookStore extends StatefulWidget {
   @override
   _BookStoreState createState() => _BookStoreState();
+
+  BookStoreController controller= Get.put(BookStoreController());
+
+
+
 }
 
 class _BookStoreState extends State<BookStore> with TickerProviderStateMixin {
-  final BookStoreController controller = Get.put(BookStoreController());
 
   static const ANIMATION_DURATION = 500;
   static const BUTTON_HEIGHT = 58.0;
@@ -381,8 +385,8 @@ class _BookStoreState extends State<BookStore> with TickerProviderStateMixin {
                   padding: EdgeInsets.only(top: 6, bottom: BUTTON_HEIGHT + 6),
                   shrinkWrap: true,
                   itemBuilder: (_, index) =>
-                      _buildPopularItem(controller.booksInPopular[index]),
-                  itemCount: controller.booksInPopular.length,
+                      _buildPopularItem(widget.controller.booksInPopular[index]),
+                  itemCount: widget.controller.booksInPopular.length,
                 ),
               );
             })
@@ -494,7 +498,7 @@ class _BookStoreState extends State<BookStore> with TickerProviderStateMixin {
                 padding: EdgeInsets.only(left: HORIZONTAL_PADDING),
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: controller.booksInShelf
+                  children: widget.controller.booksInShelf
                       .map((it) => _buildBookshelfItem(it))
                       .toList(),
                 ),

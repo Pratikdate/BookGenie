@@ -13,9 +13,9 @@ class BookStoreController extends GetxController with SingleGetTickerProviderMix
 
   }
   final booksInShelf = List<Book>.filled(5,Book(
-    name: "Cleansed by dead",
-    author: "Catherine finger",
-    progress: 50,
+    name: "",
+    author: "",
+    progress: 0,
     image: "https://i.pinimg.com/564x/f7/fd/65/f7fd65f7361a917f0d0d81fc59a2b452.jpg",
     fileUrl:""
   ),growable: false).obs;

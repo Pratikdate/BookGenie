@@ -17,7 +17,6 @@ class ChatScreenHandler extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ChatScreenController.bookUid=uid;
 
     return Scaffold(
       body: Obx(() {

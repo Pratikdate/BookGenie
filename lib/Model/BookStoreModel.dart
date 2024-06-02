@@ -13,7 +13,7 @@ class BookStoreModel {
 
     try{
       final response = await
-      http.get(Uri.parse('http://192.168.233.145:8000/api/books/'));
+      http.get(Uri.parse('http://192.168.233.145:8000/api/shelfbooks/'));
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
         // Do something with the response data
@@ -43,7 +43,7 @@ class BookStoreModel {
 
     try{
       final response = await
-      http.get(Uri.parse('http://192.168.233.145:8000/api/books/'));
+      http.get(Uri.parse('http://192.168.233.145:8000/api/popularbooks/'));
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
         // Do something with the response data
