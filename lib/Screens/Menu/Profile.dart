@@ -8,8 +8,16 @@ import 'package:get/get.dart';
 import '../../Controller/MenuController/ProfileController.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Profile extends StatelessWidget {
-  Profile({super.key});
+
+class Profile extends StatefulWidget {
+  const Profile({super.key});
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+
   ProfileController controller=Get.put(ProfileController());
 
 
@@ -60,22 +68,23 @@ class Profile extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          Column(
-          children: <Widget>[
-            _appBarSection(),
+          Obx(() {
+            return Column(
+                children: <Widget>[
+                _appBarSection(),
             CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage('${BookStoreController.BASE_URL}/${controller.profileInfo['image']}'),
+            radius: 50,
+            backgroundImage: NetworkImage('${BookStoreController.BASE_URL}/${controller.profileInfo['image']}'),
             ),
             SizedBox(height: 10),
             Text(
-              controller.profileInfo['name'],
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            controller.profileInfo['name'],
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 5),
             Text(
-              controller.profileInfo['email'],
-              style: TextStyle(fontSize: 16, color: Colors.white70),
+            controller.profileInfo['email'],
+            style: TextStyle(fontSize: 16, color: Colors.white70),
             ),
             SizedBox(height: 5),
             Text(
@@ -83,7 +92,8 @@ class Profile extends StatelessWidget {
               style: TextStyle(fontSize: 16, color: Colors.white),
             ),
           ],
-        ),
+        );
+  }),
 
           Positioned(
             bottom: 10,

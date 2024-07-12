@@ -20,7 +20,7 @@ class BookStore extends StatefulWidget {
   @override
   _BookStoreState createState() => _BookStoreState();
 
-  BookStoreController controller = Get.put(BookStoreController());
+
 }
 
 class _BookStoreState extends State<BookStore> with TickerProviderStateMixin {
@@ -43,6 +43,7 @@ class _BookStoreState extends State<BookStore> with TickerProviderStateMixin {
   late Animation<double> valueAnimation;
   var scaffoldKey = GlobalKey<ScaffoldState>();
   late ProfileController controllerprofile;
+  late BookStoreController controller;
 
 
 
@@ -64,7 +65,7 @@ class _BookStoreState extends State<BookStore> with TickerProviderStateMixin {
     bookshelfController.dispose();
     popularController.dispose();
     _controller.dispose();
-    widget.controller.dispose();
+    controller.dispose();
 
     super.dispose();
   }
@@ -83,6 +84,7 @@ class _BookStoreState extends State<BookStore> with TickerProviderStateMixin {
   _init() {
     final screenHeight = MediaQuery.of(context).size.height;
     controllerprofile=Get.put(ProfileController());
+    controller = Get.put(BookStoreController());
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: ANIMATION_DURATION),
@@ -543,8 +545,8 @@ class _BookStoreState extends State<BookStore> with TickerProviderStateMixin {
                   padding: EdgeInsets.only(top: 6, bottom: BUTTON_HEIGHT + 6),
                   shrinkWrap: true,
                   itemBuilder: (_, index) => _buildPopularItem(
-                      widget.controller.booksInPopular[index]),
-                  itemCount: widget.controller.booksInPopular.length,
+                      controller.booksInPopular[index]),
+                  itemCount: controller.booksInPopular.length,
                 ),
               );
             })
@@ -651,18 +653,22 @@ class _BookStoreState extends State<BookStore> with TickerProviderStateMixin {
               1 - valueAnimation.value,
               onTap: _reverse,
             ),
-            Container(
-              child: SingleChildScrollView(
-                controller: bookshelfController,
-                padding: EdgeInsets.only(left: HORIZONTAL_PADDING),
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: widget.controller.booksInShelf
-                      .map((it) => _buildBookshelfItem(it))
-                      .toList(),
+            Obx(() {
+              return Container(
+                child: SingleChildScrollView(
+                  controller: bookshelfController,
+
+                  padding: EdgeInsets.only(left: HORIZONTAL_PADDING),
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: controller.booksInShelf
+                        .map((it) => _buildBookshelfItem(it))
+                        .toList(),
+                  ),
                 ),
-              ),
-            )
+              );
+            }
+            ),
           ],
         ),
       ),
@@ -679,25 +685,30 @@ class _BookStoreState extends State<BookStore> with TickerProviderStateMixin {
             decoration: BoxDecoration(
               color: Colors.green,
             ), //BoxDecoration
-            child: UserAccountsDrawerHeader(
-              margin: EdgeInsets.only(bottom: 0),
-              decoration: BoxDecoration(color: Colors.green),
-              accountName: Text(
-                controllerprofile.profileInfo['name'],
-                style: TextStyle(
-                  fontSize: 18,
-                ),
-              ),
-              accountEmail: Text(controllerprofile.profileInfo['email']),
-              currentAccountPictureSize: Size.square(50),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Color.fromARGB(255, 165, 255, 137),
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: NetworkImage('${BookStoreController.BASE_URL}/${controllerprofile.profileInfo['image']}'),
-                ),
-              ), //circleAvatar
-            ), //UserAccountDrawerHeader
+            child: Obx(() {
+              return UserAccountsDrawerHeader(
+                  margin: EdgeInsets.only(bottom: 0),
+                  decoration: BoxDecoration(color: Colors.green),
+                  accountName: Text(
+                    controllerprofile.profileInfo['name'],
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  accountEmail: Text(controllerprofile.profileInfo['email']),
+                  currentAccountPictureSize: Size.square(50),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundColor: Color.fromARGB(255, 165, 255, 137),
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: NetworkImage(
+                          '${BookStoreController.BASE_URL}/${controllerprofile
+                              .profileInfo['image']}'),
+                    ),
+                  ));
+            }
+            )//circleAvatar
+
           ), //DrawerHeader
           ListTile(
             leading: const Icon(Icons.person),

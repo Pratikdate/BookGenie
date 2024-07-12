@@ -4,7 +4,7 @@ import '../Model/BookStoreModel.dart';
 
 class BookStoreController extends GetxController with SingleGetTickerProviderMixin {
   var isLoading = true.obs;
-  static String BASE_URL="notification-mostly-ni-federal.trycloudflare.com";  //"http://192.168.74.145:8000";
+  static String BASE_URL="https://she-electricity-wheels-bars.trycloudflare.com";  //"http://192.168.74.145:8000";
 
 
 

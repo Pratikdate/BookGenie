@@ -59,7 +59,7 @@ class AuthController extends GetxController {
   Future<void> login(String email, String password) async {
 
     final response = await http.post(
-      Uri.parse("${BookStoreController.BASE_URL}/login/"),
+      Uri.parse("${BookStoreController.BASE_URL}/api/login/"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
 
@@ -85,7 +85,7 @@ class AuthController extends GetxController {
 
   Future<void> signup(String username,String email, String password) async {
     final response = await http.post(
-      Uri.parse("${BookStoreController.BASE_URL}/register/"),
+      Uri.parse("${BookStoreController.BASE_URL}/api/register/"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -108,7 +108,7 @@ class AuthController extends GetxController {
 
   Future<void> forgotPassword(String email) async {
     final response = await http.post(
-      Uri.parse("${BookStoreController.BASE_URL}/forgot-password/"),
+      Uri.parse("${BookStoreController.BASE_URL}/api/forgot-password/"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
