@@ -5,23 +5,32 @@ import '../Model/BookStoreModel.dart';
 class BookStoreController extends GetxController with SingleGetTickerProviderMixin {
   var isLoading = true.obs;
   static String BASE_URL="https://she-electricity-wheels-bars.trycloudflare.com";  //"http://192.168.74.145:8000";
-
+  late List<Book> booksInShelf ;
+  late List<Book> booksInPopular ;
 
 
   @override
   void onInit() {
     super.onInit();
-    BookStoreModel.BookShelfModel();
-    BookStoreModel.booksInPopularModel();
-
-  }
-  final booksInShelf = List<Book>.filled(3,Book(
+    booksInShelf = List<Book>.filled(3,Book(
     name: "",
     author: "",
     progress: 0,
     image: "https://i.pinimg.com/564x/f7/fd/65/f7fd65f7361a917f0d0d81fc59a2b452.jpg",
     fileUrl:""
-  ),growable: false).obs;
+    ),growable: false).obs;
+
+    booksInPopular = List<Book>.filled(3,Book(
+      name: "",
+      author: "",
+      progress: 0,
+      image: "https://i.pinimg.com/564x/f7/fd/65/f7fd65f7361a917f0d0d81fc59a2b452.jpg",
+      rating: 0,
+      price: "0",
+    ),growable: false).obs;
+
+  }
+
 
       //<Book>[
     // Book(
@@ -56,14 +65,7 @@ class BookStoreController extends GetxController with SingleGetTickerProviderMix
     // ),
   //].obs;
 
-  final booksInPopular = List<Book>.filled(3,Book(
-    name: "",
-    author: "",
-    progress: 0,
-    image: "https://i.pinimg.com/564x/f7/fd/65/f7fd65f7361a917f0d0d81fc59a2b452.jpg",
-    rating: 0,
-    price: "0",
-  ),growable: false).obs;
+
   // [
   //   Book(
   //     name: "Cleansed by dead",

@@ -79,12 +79,16 @@ class _BookStoreState extends State<BookStore> with TickerProviderStateMixin {
       ..addListener(handleBookshelfScrolling);
     popularController = ScrollController()
       ..addListener(handlePopularBookScrolling);
+    controllerprofile=Get.put(ProfileController());
+    controller = Get.put(BookStoreController());
+    BookStoreModel.BookShelfModel();
+    BookStoreModel.booksInPopularModel();
   }
 
   _init() {
     final screenHeight = MediaQuery.of(context).size.height;
-    controllerprofile=Get.put(ProfileController());
-    controller = Get.put(BookStoreController());
+
+
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: ANIMATION_DURATION),
@@ -654,17 +658,15 @@ class _BookStoreState extends State<BookStore> with TickerProviderStateMixin {
               onTap: _reverse,
             ),
             Obx(() {
-              return Container(
-                child: SingleChildScrollView(
-                  controller: bookshelfController,
-
-                  padding: EdgeInsets.only(left: HORIZONTAL_PADDING),
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: controller.booksInShelf
-                        .map((it) => _buildBookshelfItem(it))
-                        .toList(),
-                  ),
+              return SingleChildScrollView(
+                controller: bookshelfController,
+              
+                padding: const EdgeInsets.only(left: HORIZONTAL_PADDING),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: controller.booksInShelf
+                      .map((it) => _buildBookshelfItem(it))
+                      .toList(),
                 ),
               );
             }
