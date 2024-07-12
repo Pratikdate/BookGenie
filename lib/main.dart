@@ -1,59 +1,75 @@
-import 'dart:async';
-import 'dart:io';
-import 'package:bookapp/Auth/AuthScreen.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:receive_intent/receive_intent.dart';
-import 'package:uri_to_file/uri_to_file.dart';
-import 'Screens/ReadBook.dart';
+import 'dart:convert';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:bookapp/Auth/AuthScreen.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'Controller/AuthController.dart';
+import 'Screens/ReadBook.dart';
 import '../Screens/BookHomeScreen.dart';
 import 'package:get/get.dart';
-
-
-
-
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await dotenv.load(fileName: "asset/.env");// Initialize Firebase
-  runApp(MyApp());
+  runApp(
+
+    //Use when you want to work on design
+
+    //         DevicePreview(
+    //       enabled: true,
+    //       tools: const [
+    //         ...DevicePreview.defaultTools,
+    //       ],
+    //       builder: (BuildContext context) => MyApp(),
+    //     )
+    // );
+      Phoenix(child: MyApp())
+  );
 }
+
+
 
 class MyApp extends StatelessWidget {
+  final AuthController authController = Get.put(AuthController());
+
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Book Store App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      initialRoute:CheckUserStatus(),
-      getPages: [
-        GetPage(name: '/auth', page: () => AuthScreen()),
-        GetPage(name: '/home', page: () => BookStore()),
-        GetPage(name: '/ReadBook', page: () => ReadBook()),
-
-      ],
-    );
+    return Obx(() {
+      if (authController.isLoading.value) {
+        return MaterialApp(
+          home: Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          ),
+        );
+      } else {
+        return ScreenUtilInit(
+            designSize: const Size(360, 640),
+            minTextAdapt: true,
+            splitScreenMode: true,
+            builder: (_, child) {
+              return GetMaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Book Store App',
+                theme: ThemeData(
+                  primarySwatch: Colors.blue,
+                ),
+                initialRoute: authController.isAuthenticated.value
+                    ? '/home'
+                    : '/auth',
+                getPages: [
+                  GetPage(name: '/auth', page: () => AuthScreen()),
+                  GetPage(name: '/home', page: () => BookStore()),
+                  GetPage(name: '/ReadBook', page: () => ReadBook()),
+                ],
+              );
+            }
+        );
+      }
+    });
   }
 }
-
-
-String CheckUserStatus(){
-  try{
-    return FirebaseAuth.instance.currentUser!.isAnonymous ?'/auth':'/home';
-  }
-  catch( e){}
-
-  return '/auth';
-
-}
-
 
 
 //

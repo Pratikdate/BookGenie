@@ -1,18 +1,18 @@
 import 'package:animated_login/animated_login.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../Controller/AuthController.dart';
 
 class AuthScreen extends StatelessWidget {
   final AuthController authController = Get.put(AuthController());
 
   Future<String?> onLogin(LoginData data) async {
+
     await authController.login(data.email, data.password);
   }
 
   Future<String?> onSignup(SignUpData data) async {
-    await authController.signup(data.email, data.password);
+    await authController.signup(data.name,data.email, data.password);
   }
 
   Future<String?> _onForgotPassword(String email) async {

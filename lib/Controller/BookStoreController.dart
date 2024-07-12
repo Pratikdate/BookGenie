@@ -4,6 +4,9 @@ import '../Model/BookStoreModel.dart';
 
 class BookStoreController extends GetxController with SingleGetTickerProviderMixin {
   var isLoading = true.obs;
+  static String BASE_URL="notification-mostly-ni-federal.trycloudflare.com";  //"http://192.168.74.145:8000";
+
+
 
   @override
   void onInit() {
@@ -12,7 +15,7 @@ class BookStoreController extends GetxController with SingleGetTickerProviderMix
     BookStoreModel.booksInPopularModel();
 
   }
-  final booksInShelf = List<Book>.filled(5,Book(
+  final booksInShelf = List<Book>.filled(3,Book(
     name: "",
     author: "",
     progress: 0,
@@ -53,13 +56,13 @@ class BookStoreController extends GetxController with SingleGetTickerProviderMix
     // ),
   //].obs;
 
-  final booksInPopular = List<Book>.filled(5,Book(
-    name: "Cleansed by dead",
-    author: "Catherine finger",
-    progress: 50,
+  final booksInPopular = List<Book>.filled(3,Book(
+    name: "",
+    author: "",
+    progress: 0,
     image: "https://i.pinimg.com/564x/f7/fd/65/f7fd65f7361a917f0d0d81fc59a2b452.jpg",
-    rating: 8.2,
-    price: "9.95",
+    rating: 0,
+    price: "0",
   ),growable: false).obs;
   // [
   //   Book(

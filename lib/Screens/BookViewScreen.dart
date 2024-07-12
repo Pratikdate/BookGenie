@@ -5,11 +5,14 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import '../Controller/ReadBookController.dart';
+import '../core/IconsHandler.dart';
 
 class BookViewScreen extends StatelessWidget {
   BookViewScreen({super.key, required this.file});
   final String file;
   final ReadBookController controller = Get.put(ReadBookController());
+  double width_floatingAction= 200;
+  TextEditingController textEditingController =TextEditingController();
 
 
 
@@ -36,6 +39,8 @@ class BookViewScreen extends StatelessWidget {
             },
             onPageChanged: (PdfPageChangedDetails details) {
               controller.savePage();
+              controller.isSearch.value = false;
+
             },
           );
         } else {
@@ -49,60 +54,98 @@ class BookViewScreen extends StatelessWidget {
           );
         }
       }),
-      floatingActionButton: Obx(() {
-        return FloatingActionButton(
+      floatingActionButton:  FloatingActionButton(
+       backgroundColor: Color.fromRGBO(51, 51, 51, 1),
           onPressed: () {
             if (controller.isSearch.value) {
               controller.isSearch.value = false;
               controller.controller.clear();
             } else if (controller.selectedTextLines != null) {
-              controller.isSearch.value = true;
-              _showToast(context, controller.selectedTextLines!);
+              controller.isSearch.value = false;
+              _showToast(context, text:controller.selectedTextLines!);
             } else {
               controller.isSearch.value = true;
+              _showToast(context);
             }
           },
-          child: controller.isSearch.value
-              ? SizedBox(
-            height: 30,
-            width: 200,
-            child: TextField(
-              controller: controller.controller,
-              onSubmitted: (text) {
-                _showToast(context, text);
-              },
-            ),
-          )
-              : Icon(Icons.search),
-        );
-      }),
-    );
+
+          child:  Icon(Icons.search,color: Colors.white,),
+
+
+    ));
   }
 
-  void _showToast(BuildContext context, String text) {
+  void _showToast(BuildContext context, {String text=""}) {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
-      SnackBar(
-        duration: Duration(seconds: 20),
+        SnackBar(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(30),
+
+
+              ),
+            ),
+          backgroundColor: Color.fromRGBO(34, 34, 34, 1),
+        duration: const Duration(seconds: 40),
         content: FutureBuilder<dynamic>(
           future: fetchDefinition(text),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: CircularProgressIndicator(color: Colors.white,));
             } else if (snapshot.hasError) {
-              return Text("Error: ${snapshot.error}");
+              if (text == "") {
+                return SizedBox(
+                    height: 35,
+                    width: 400,
+                    child: TextField(
+                      controller: textEditingController,
+
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Color.fromRGBO(34, 34, 34, 1), width: 1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+
+                        labelText: 'Search Meaning',
+                        fillColor: Colors.white,
+                        filled: true,
+
+                      ),
+
+
+                      onSubmitted: (text_) {
+                        _showToast(context, text: text_);
+                        scaffold.hideCurrentSnackBar();
+
+                      },
+                    )
+
+
+                );
+              }
+              else {
+                return Text("Error: ${snapshot.error}");
+              }
             } else if (snapshot.hasData) {
               final data = snapshot.data;
               return _buildDefinitionWidget(data);
-            } else {
+            }
+
+
+            else {
               return Text("No data found");
             }
           },
         ),
-        action: SnackBarAction(label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
-      ),
+        action: SnackBarAction(
+            label:'UNDO', onPressed: scaffold.hideCurrentSnackBar),
+        )
     );
   }
+
+
+
 
   Future<dynamic> fetchDefinition(String text) async {
     final response = await http.get(Uri.parse(

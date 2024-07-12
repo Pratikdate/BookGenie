@@ -4,8 +4,8 @@
 4
 5    <uses-sdk
 6        android:minSdkVersion="19"
-6-->C:\Users\USER\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.19\android\src\main\AndroidManifest.xml
+6-->C:\Users\USER\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.20\android\src\main\AndroidManifest.xml
 7        android:targetSdkVersion="19" />
-7-->C:\Users\USER\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.19\android\src\main\AndroidManifest.xml
+7-->C:\Users\USER\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.20\android\src\main\AndroidManifest.xml
 8
 9</manifest>

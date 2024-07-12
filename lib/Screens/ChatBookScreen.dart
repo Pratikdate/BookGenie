@@ -38,7 +38,7 @@ class ChatScreenHandler extends StatelessWidget {
             ),
           );
         } else {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator(color: Colors.deepOrangeAccent,));
         }
       }),
     );

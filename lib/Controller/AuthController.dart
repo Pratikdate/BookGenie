@@ -1,58 +1,127 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+
+import '../Auth/Tokens.dart';
+import 'BookStoreController.dart';
+
+
+
+
+
 
 class AuthController extends GetxController {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<void> login(String email, String password) async {
+  var isAuthenticated = false.obs;
+  var isLoading = true.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    checkUserStatus();
+  }
+
+
+  Future<void> checkUserStatus() async {
+    final url = '${BookStoreController.BASE_URL}/api/check-auth-status/';
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      Get.snackbar("Success", "Login successfully", snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green);
-      Get.offAllNamed('/home');
-    } on FirebaseAuthException catch (e) {
-      String message;
-      if (e.code == "user-not-found") {
-        message = "Email not found, please signup first";
-      } else if (e.code == "wrong-password") {
-        message = "Wrong password or email address";
+      final token = await getToken();
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token $token', // Ensure the token is formatted correctly
+        },
+      );
+
+      print(response.body);
+      print(token);
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        isAuthenticated.value = responseData['is_authenticated'] as bool;
       } else {
-        message = e.code;
+        // Handle error
+        isAuthenticated.value = false;
+        print('Error: ${response.statusCode} - ${response.body}');
       }
-      Get.snackbar("Error", message, snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
+    } catch (e) {
+      // Handle exception
+      isAuthenticated.value = false;
+      print('Exception: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 
-  Future<void> signup(String email, String password) async {
-    try {
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
+
+  Future<void> login(String email, String password) async {
+
+    final response = await http.post(
+      Uri.parse("${BookStoreController.BASE_URL}/login/"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+
+      },
+      body: jsonEncode(<String, String>{
+        'email': email,
+        'password': password,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      String token = responseData['token'];
+      print(token);
+      await storeToken(token);
+      Get.snackbar("Success", "Login successfully", snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green);
+      Get.offAllNamed('/home');
+    } else {
+      final responseData = jsonDecode(response.body);
+      Get.snackbar("Error", responseData['message'] ?? "Login failed", snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
+    }
+  }
+
+  Future<void> signup(String username,String email, String password) async {
+    final response = await http.post(
+      Uri.parse("${BookStoreController.BASE_URL}/register/"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'username':email,
+        'password': password,
+      }),
+    );
+
+
+
+    if (response.statusCode == 201) {
       Get.snackbar("Success", "Registration successful, please login", snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green);
       Get.offNamed('/auth');
-    } on FirebaseAuthException catch (e) {
-      String message;
-      if (e.code == "weak-password") {
-        message = "Password provided is too weak";
-      } else if (e.code == "email-already-in-use") {
-        message = "Email already in use";
-      } else {
-        message = e.code;
-      }
-      Get.snackbar("Error", message, snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
+    } else {
+      final responseData = jsonDecode(response.body);
+      Get.snackbar("Error", responseData['message'] ?? "Registration failed", snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
     }
   }
 
   Future<void> forgotPassword(String email) async {
-    try {
-      await _auth.sendPasswordResetEmail(email: email);
+    final response = await http.post(
+      Uri.parse("${BookStoreController.BASE_URL}/forgot-password/"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': email,
+      }),
+    );
+
+    if (response.statusCode == 200) {
       Get.snackbar("Success", "Password reset email sent", snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green);
-    } on FirebaseAuthException catch (e) {
-      String message;
-      if (e.code == "user-not-found") {
-        message = "User not found";
-      } else {
-        message = e.code;
-      }
-      Get.snackbar("Error", message, snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
+    } else {
+      final responseData = jsonDecode(response.body);
+      Get.snackbar("Error", responseData['message'] ?? "Failed to send password reset email", snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
     }
   }
 }

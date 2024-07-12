@@ -1,16 +1,17 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.bookapp-mergeDebugResources-19:/values-v16/values-v16.xml",
+            "outputFile": "com.example.bookapp-mergeDebugResources-36:/values-v16/values-v16.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\USER\\.gradle\\caches\\transforms-3\\1b12ae2fb11e8c09a1e741d2196bdece\\transformed\\core-1.10.1\\res\\values-v16\\values-v16.xml",
+                    "source": "C:\\Users\\USER\\.gradle\\caches\\transforms-3\\e3da7c07a0965ca0b1e35be2e57636e0\\transformed\\appcompat-1.6.1\\res\\values-v16\\values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
                         "startOffsets": "55",
-                        "endColumns": "65",
-                        "endOffsets": "116"
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "223"
                     }
                 }
             ]

@@ -8,6 +8,7 @@ import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Controller/ChatScreenController.dart';
 import '../Controller/ReadBookController.dart';
+import '../core/IconsHandler.dart';
 import 'BookViewScreen.dart';
 import 'ChatBookScreen.dart';
 import 'package:get/get.dart';
@@ -39,7 +40,16 @@ class _ChatScreenState extends State<ReadBook>
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabChange);
     ReadBookController.fileUrl=Get.arguments[0];
+    ReadBookController.fileUID=Get.arguments[1];
     ChatScreenController.bookUid=Get.arguments[1];
+
+  }
+
+  @override
+  void dispose(){
+
+    super.dispose();
+
 
   }
 
@@ -68,9 +78,27 @@ class _ChatScreenState extends State<ReadBook>
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: Colors.white,
+
+
           appBar: AppBar(
+
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(30),
+
+
+              ),
+
+            ),
+            leading: Align(
+              alignment: Alignment.topRight,
+                child:ThreeDotMenuButton()
+            ) ,
             bottom: TabBar(
+
+              dividerColor: Colors.transparent,
+              indicatorColor: Colors.white,
+              labelColor: Colors.white,
               controller: _tabController,
               tabs: const [
                 Tab(text: "Read Book"),
@@ -80,12 +108,8 @@ class _ChatScreenState extends State<ReadBook>
             ),
             toolbarHeight: 30,
             leadingWidth: MediaQuery.of(context).size.width,
-            backgroundColor: Colors.white70,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(0),
-              ),
-            ),
+            backgroundColor: Color.fromRGBO(51, 51, 51, 1),
+
           ),
           body: TabBarView(
             controller: _tabController,
@@ -101,3 +125,35 @@ class _ChatScreenState extends State<ReadBook>
   }
 }
 
+
+class ThreeDotMenuButton extends StatelessWidget {
+
+  ReadBookController controller=ReadBookController();
+  void _handleMenuOption(String option) {
+    switch(option){
+      case "Add Bookmark":
+        controller.SetBookmarks();
+        break;
+      case "Exit":
+        Get.back();
+        break;
+
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<String>(
+      onSelected: _handleMenuOption,
+      itemBuilder: (BuildContext context) {
+        return {'Add Bookmark', 'Exit'}.map((String choice) {
+          return PopupMenuItem<String>(
+            value: choice,
+            child: Text(choice),
+          );
+        }).toList();
+      },
+      icon: Icon(IconHandler.three_dot_menue,color: Colors.white,),
+    );
+  }
+}

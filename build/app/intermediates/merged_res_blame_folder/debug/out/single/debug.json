@@ -1,34 +1,30 @@
 [
     {
-        "merged": "com.example.bookapp-merged_res-21:/mipmap-hdpi_ic_launcher.png.flat",
-        "source": "com.example.bookapp-main-14:/mipmap-hdpi/ic_launcher.png"
+        "merged": "com.example.bookapp-merged_res-38:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.example.bookapp-main-31:/mipmap-xxxhdpi/ic_launcher.png"
     },
     {
-        "merged": "com.example.bookapp-merged_res-21:/mipmap-hdpi_logo.jpg.flat",
-        "source": "com.example.bookapp-main-14:/mipmap-hdpi/logo.jpg"
+        "merged": "com.example.bookapp-merged_res-38:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.example.bookapp-main-31:/mipmap-mdpi/ic_launcher.png"
     },
     {
-        "merged": "com.example.bookapp-merged_res-21:/mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "com.example.bookapp-main-14:/mipmap-xxxhdpi/ic_launcher.png"
+        "merged": "com.example.bookapp-merged_res-38:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.example.bookapp-main-31:/mipmap-xhdpi/ic_launcher.png"
     },
     {
-        "merged": "com.example.bookapp-merged_res-21:/mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "com.example.bookapp-main-14:/mipmap-xxhdpi/ic_launcher.png"
+        "merged": "com.example.bookapp-merged_res-38:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.example.bookapp-main-31:/mipmap-xxhdpi/ic_launcher.png"
     },
     {
-        "merged": "com.example.bookapp-merged_res-21:/drawable_launch_background.xml.flat",
-        "source": "com.example.bookapp-main-14:/drawable/launch_background.xml"
+        "merged": "com.example.bookapp-merged_res-38:/mipmap-hdpi_logo.jpg.flat",
+        "source": "com.example.bookapp-main-31:/mipmap-hdpi/logo.jpg"
     },
     {
-        "merged": "com.example.bookapp-merged_res-21:/mipmap-mdpi_ic_launcher.png.flat",
-        "source": "com.example.bookapp-main-14:/mipmap-mdpi/ic_launcher.png"
+        "merged": "com.example.bookapp-merged_res-38:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.example.bookapp-main-31:/mipmap-hdpi/ic_launcher.png"
     },
     {
-        "merged": "com.example.bookapp-merged_res-21:/mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "com.example.bookapp-main-14:/mipmap-xhdpi/ic_launcher.png"
-    },
-    {
-        "merged": "com.example.bookapp-merged_res-21:/drawable-v21_launch_background.xml.flat",
-        "source": "com.example.bookapp-main-14:/drawable-v21/launch_background.xml"
+        "merged": "com.example.bookapp-merged_res-38:/drawable-v21_launch_background.xml.flat",
+        "source": "com.example.bookapp-main-31:/drawable-v21/launch_background.xml"
     }
 ]
