@@ -14,5 +14,7 @@ class IconHandler {
   static const phone = MaterialCommunityIcons.phone;
   static const pass = Entypo.info_with_circle;
   static const alternate_pencil= MaterialCommunityIcons.pencil;
+  static const chat=Entypo.chat;
+  static const Audiobook=MaterialIcons.multitrack_audio;
 
 }

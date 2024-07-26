@@ -13,8 +13,11 @@ class FontHandler extends StatelessWidget{
     this.fontweight,
     super.key,
   });
+
+
+
   final TextAlign textAlign;
-  final String text;
+  final String? text;
   final double? fontsize;
   final FontWeight? fontweight;
   final Color color;
@@ -26,7 +29,7 @@ class FontHandler extends StatelessWidget{
 
 
     return Text(
-      text,
+      text ?? "",
       maxLines: 1,
       softWrap: false,
       overflow: TextOverflow.fade,

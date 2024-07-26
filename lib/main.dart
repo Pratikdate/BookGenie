@@ -10,33 +10,52 @@ import 'package:get/get.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(
+import 'features/book/data/datasouces/remote/auth_api_service.dart';
+import 'features/book/data/repositories/auth_repository_impl.dart';
+import 'features/book/dependency_injection.dart';
+import 'features/book/domain/repositories/auth_repository.dart';
+import 'features/book/domain/usecases/auth_usecase.dart';
+import 'features/book/presentation/controllers/auth_controller.dart';
+import 'features/book/presentation/pages/auth_screen.dart';
+import 'package:get/get.dart';
+import 'package:get/get.dart';
 
-    //Use when you want to work on design
+import 'features/book/presentation/pages/home_screen.dart';
 
-    //         DevicePreview(
-    //       enabled: true,
-    //       tools: const [
-    //         ...DevicePreview.defaultTools,
-    //       ],
-    //       builder: (BuildContext context) => MyApp(),
-    //     )
-    // );
-      Phoenix(child: MyApp())
-  );
+import 'package:http/http.dart' as http;
+
+void init(){
+
+  Get.lazyPut<RemoteAuthDataSource>(() => RemoteAuthDataSource(client: http.Client()));
+  Get.lazyPut<AuthRepository>(() => AuthRepositoryImpl(Get.find()));
+  Get.lazyPut(() => LoginUseCase(Get.find()));
+  Get.lazyPut(() => SignUpUseCase(Get.find()));
+  Get.lazyPut(() => AuthStatusUseCase(Get.find()));
+  Get.lazyPut(() => AuthController(
+    loginUseCase: Get.find(),
+    signUpUseCase: Get.find(),
+    authStatusUseCase: Get.find(),
+  ));
 }
 
 
+void main() async {
+  init();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); // Ensure Firebase is initialized
+
+  runApp(
+    Phoenix(
+      child: MyApp(),
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
-  final AuthController authController = Get.put(AuthController());
-
   @override
   Widget build(BuildContext context) {
     return Obx(() {
+      final authController = Get.find<AuthController>();
       if (authController.isLoading.value) {
         return MaterialApp(
           home: Scaffold(
@@ -45,26 +64,35 @@ class MyApp extends StatelessWidget {
         );
       } else {
         return ScreenUtilInit(
-            designSize: const Size(360, 640),
-            minTextAdapt: true,
-            splitScreenMode: true,
-            builder: (_, child) {
-              return GetMaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: 'Book Store App',
-                theme: ThemeData(
-                  primarySwatch: Colors.blue,
+          designSize: const Size(360, 640),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (_, child) {
+            return GetMaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Book Store App',
+              theme: ThemeData(
+                primarySwatch: Colors.blue,
+              ),
+              initialRoute: authController.isAuthenticated.value
+                  ? '/home'
+                  : '/auth',
+              initialBinding: DependencyBinding(),
+              getPages: [
+                GetPage(
+                  name: '/auth',
+                  page: () => AuthScreen(),
+                  binding: DependencyBinding(),
                 ),
-                initialRoute: authController.isAuthenticated.value
-                    ? '/home'
-                    : '/auth',
-                getPages: [
-                  GetPage(name: '/auth', page: () => AuthScreen()),
-                  GetPage(name: '/home', page: () => BookStore()),
-                  GetPage(name: '/ReadBook', page: () => ReadBook()),
-                ],
-              );
-            }
+                GetPage(
+                  name: '/home',
+                  page: () => HomeScreen(),
+                  binding: DependencyBinding(),
+                ),
+                // Add other pages and bindings as needed
+              ],
+            );
+          },
         );
       }
     });

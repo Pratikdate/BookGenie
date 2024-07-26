@@ -79,6 +79,7 @@ int drawable notification_bg_low_pressed 0x0
 int drawable notification_bg_normal 0x0
 int drawable notification_bg_normal_pressed 0x0
 int drawable notification_icon_background 0x0
+int drawable notification_oversize_large_icon_bg 0x0
 int drawable notification_template_icon_bg 0x0
 int drawable notification_template_icon_low_bg 0x0
 int drawable notification_tile_bg 0x0
@@ -131,7 +132,9 @@ int id browser_actions_menu_items 0x0
 int id browser_actions_menu_view 0x0
 int id chronometer 0x0
 int id dialog_button 0x0
+int id edit_text_id 0x0
 int id forever 0x0
+int id hide_ime_id 0x0
 int id icon 0x0
 int id icon_group 0x0
 int id info 0x0
@@ -165,10 +168,13 @@ int id text2 0x0
 int id time 0x0
 int id title 0x0
 int id view_tree_lifecycle_owner 0x0
+int id view_tree_view_model_store_owner 0x0
 int integer status_bar_notification_info_maxnum 0x0
 int layout browser_actions_context_menu_page 0x0
 int layout browser_actions_context_menu_row 0x0
 int layout custom_dialog 0x0
+int layout ime_base_split_test_activity 0x0
+int layout ime_secondary_split_test_activity 0x0
 int layout notification_action 0x0
 int layout notification_action_tombstone 0x0
 int layout notification_template_custom_big 0x0
