@@ -19,7 +19,7 @@ In an era where digital technology has transformed our lives, traditional readin
 2. Run Server on Desktop link- https://github.com/Pratikdate/ChatPDF_API.
 3. Run the apk file on your phone.
 
-## 🐠 App Photos
+## :books: App Photos
 ![BookGenei (1)](https://github.com/user-attachments/assets/acee8367-bf8e-4a21-a885-0d048951a1c8)
 
 ![BookGenei (2)](https://github.com/user-attachments/assets/ba9d5eba-6496-4320-a17d-8f0b1147a8c8)
