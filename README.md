@@ -38,5 +38,5 @@ In an era where digital technology has transformed our lives, traditional readin
 
 
 <a href="https://github.com/Pratikdate/BookGenei/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Pratikdate/Monitor" />
+  <img src="https://contrib.rocks/image?repo=Pratikdate/BookGenei" />
 </a>
