@@ -36,6 +36,6 @@ In an era where digital technology has transformed our lives, traditional readin
 
 ## 👥  Contributors
 
-|[Günseli Ünsal](https://github.com/GunseliUnsal)|[Yusuf Talha Kılıç](https://github.com/yusuftalhaklc)|[Hilda Doğa Arslanpençesi](https://github.com/HildaDoga)|[Azranur Vardar](https://github.com/azranurvrdr)|
+|[Günseli Ünsal](https://github.com/Pratikdate)|
 |---|---|---|---|
-|<img src="https://avatars.githubusercontent.com/u/93467749?v=4" style="width: 200px;">|<img src="https://media.licdn.com/dms/image/D4D03AQH8Q23WYsoIiA/profile-displayphoto-shrink_200_200/0/1689271769383?e=1712793600&v=beta&t=m6Isb7RjFh8af3iG9nr2ZX09LO4E7nekUbNg64pzh6I" style="width: 200px;">|<img src="https://avatars.githubusercontent.com/u/149239440?v=4" style="width: 200px;">|<img src="https://avatars.githubusercontent.com/u/149239437?v=4" style="width: 200px;">|
+|<img src="[https://avatars.githubusercontent.com/u/93467749?v=4](https://avatars.githubusercontent.com/u/91735895?v=4)" style="width: 200px;">|
