@@ -15,8 +15,9 @@ In an era where digital technology has transformed our lives, traditional readin
 ## 📲 How to Download
   For Android User
 
-1. Download the apk file for your mobile version [here](https://drive.google.com/file/d/116lPLUfCvVXC17VDidRJSLYJxw0Qwixk/view?usp=sharing).
-2. Run the apk file on your phone.
+1. Download the apk file for your mobile and edit the base URL.
+2. Run Server on Desktop link- https://github.com/Pratikdate/ChatPDF_API.
+3. Run the apk file on your phone.
 
 ## 🐠 App Photos
 ![BookGenei (1)](https://github.com/user-attachments/assets/acee8367-bf8e-4a21-a885-0d048951a1c8)
