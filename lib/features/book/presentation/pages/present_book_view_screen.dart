@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/ColorHandler.dart';
 import '../../../../core/FontHandler.dart';
 import '../../dependency_injection.dart';
+import 'audio_book_screen.dart';
 import 'book_tab_view_screen.dart';
 
 class PresentBookViewScreen extends StatefulWidget {
@@ -48,12 +49,11 @@ class _PresentBookViewScreenState extends State<PresentBookViewScreen> {
 
     return Container(
 
-      height: MediaQuery.of(context).size.height/2,
+      height: MediaQuery.of(context).size.height/1.4,
       decoration: BoxDecoration(
         image: DecorationImage(image: NetworkImage(bookImage),fit: BoxFit.fill) ,
-        borderRadius: BorderRadius.vertical(
+        borderRadius: const BorderRadius.vertical(
           bottom: Radius.circular(60),
-
 
         ),
       ),
@@ -68,6 +68,7 @@ class _PresentBookViewScreenState extends State<PresentBookViewScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+
             FontHandler(
               name,
               color: ColorHandler.normalFont,
@@ -126,6 +127,7 @@ class _PresentBookViewScreenState extends State<PresentBookViewScreen> {
                 ),
               ),
               onPressed: () {
+                Get.to(AudiobookScreen(),arguments: [Get.arguments[0]]);
 
               },
               child: Row(
@@ -179,17 +181,15 @@ class _PresentBookViewScreenState extends State<PresentBookViewScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //mainAxisAlignment: MainAxisAlignment.spaceAround,
 
 
         children: <Widget>[
-
           _couverSection(),
 
-          _bookInfoSection(),
 
+          _bookInfoSection(),
           _NavSection(),
-          Spacer(),
 
         ],
       ),

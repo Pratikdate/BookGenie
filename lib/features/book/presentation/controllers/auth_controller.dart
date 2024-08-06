@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:bookapp/features/book/domain/%20entities/auth.dart';
 import 'package:bookapp/features/book/domain/usecases/auth_usecase.dart';
@@ -25,8 +26,8 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
-    ChackAuthStatus();
+    Timer(
+        const Duration(seconds: 3),()=>ChackAuthStatus());
   }
 
   Future<void> login(String email, String password) async {

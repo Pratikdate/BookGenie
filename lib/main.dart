@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:bookapp/core/ColorHandler.dart';
+import 'package:bookapp/core/FontHandler.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:bookapp/Auth/AuthScreen.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +53,8 @@ void main() async {
   );
 }
 
+
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -59,7 +63,25 @@ class MyApp extends StatelessWidget {
       if (authController.isLoading.value) {
         return MaterialApp(
           home: Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+            body: Center(
+              child: Column(
+                children: [
+                  Spacer(),
+                  Center(
+                      child: Image.asset("asset/logo_BookGeany.png",fit: BoxFit.fill,height: 240,)
+                  ),
+                  const Spacer(),
+                  const FontHandler(
+                    "BookGenie",
+                    color: ColorHandler.normalFont,
+                    textAlign: TextAlign.end,
+                    fontweight: FontWeight.bold,
+                    fontsize: 30,
+                  ),
+                  SizedBox(height: 60,)
+                ],
+              ),
+            ),
           ),
         );
       } else {

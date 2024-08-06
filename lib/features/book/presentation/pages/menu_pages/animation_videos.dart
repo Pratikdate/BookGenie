@@ -5,7 +5,13 @@ import '../../../../../core/ColorHandler.dart';
 import '../../../../../core/IconsHandler.dart';
 
 class AnimatedVideos extends StatelessWidget {
-  final List<String> categories = ["All", "Spiritual",  "Epics", "History","Science",];
+  final List<String> categories = [
+    "All",
+    "Spiritual",
+    "Epics",
+    "History",
+    "Science",
+  ];
 
   _appBarSection() {
     return AppBar(
@@ -20,44 +26,52 @@ class AnimatedVideos extends StatelessWidget {
     );
   }
 
-  final articles=[
+  final articles = [
     {
       "id": 1,
       "title": "Siddhartha Part Two: The Ferryman Summary & Analysis",
-      "description": "Having resolved to live a new life by the river, Siddhartha soon meets the ferryman, the same one who had helped Siddhartha cross the river years before. ",
-      "image_url": "https://koala.sh/api/image/v2-620fm-t6xvb.jpg?width=1216&height=832&dream",
+      "description":
+          "Having resolved to live a new life by the river, Siddhartha soon meets the ferryman, the same one who had helped Siddhartha cross the river years before. ",
+      "image_url":
+          "https://koala.sh/api/image/v2-620fm-t6xvb.jpg?width=1216&height=832&dream",
       "author": "Jane Doe",
-      "author_image_url": "https://cdn.freelogovectors.net/wp-content/uploads/2021/12/the-indian-express-logo-freelogovectors.net_-306x400.png"
+      "author_image_url":
+          "https://cdn.freelogovectors.net/wp-content/uploads/2021/12/the-indian-express-logo-freelogovectors.net_-306x400.png"
     },
     {
       "id": 2,
-      "title": "The Story of My Experiments with Truth Part-1 Birth And Parentage",
-      "description": "The Story of My Experiments with Truth is the autobiography of Mahatma Gandhi, covering his life from early childhood through to 1921.",
-      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxYC-t3VtLdbvma96jO6fzGn06vlwpGCAFnQ&s",
+      "title":
+          "The Story of My Experiments with Truth Part-1 Birth And Parentage",
+      "description":
+          "The Story of My Experiments with Truth is the autobiography of Mahatma Gandhi, covering his life from early childhood through to 1921.",
+      "image_url":
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxYC-t3VtLdbvma96jO6fzGn06vlwpGCAFnQ&s",
       "author": "Alice Johnson",
-      "author_image_url": "https://www.un.org/sites/un2.un.org/files/2021/03/un-logo.png"
+      "author_image_url":
+          "https://www.un.org/sites/un2.un.org/files/2021/03/un-logo.png"
     },
     {
       "id": 3,
       "title": "The American Revolution Part-1",
-      "description": "The American Revolution came about due to growing tensions between the American colonies and Great Britain, primarily over issues of taxation and representation",
-      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8hfjmzPGL3XTiv7p56xcBp57bgqLxsLS30w&s",
+      "description":
+          "The American Revolution came about due to growing tensions between the American colonies and Great Britain, primarily over issues of taxation and representation",
+      "image_url":
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8hfjmzPGL3XTiv7p56xcBp57bgqLxsLS30w&s",
       "author": "TOI Tech Desk",
-      "author_image_url": "https://cdn.freelogovectors.net/wp-content/uploads/2021/12/the-indian-express-logo-freelogovectors.net_-306x400.png"
-
-
+      "author_image_url":
+          "https://cdn.freelogovectors.net/wp-content/uploads/2021/12/the-indian-express-logo-freelogovectors.net_-306x400.png"
     },
-
     {
       "id": 4,
       "title": "Prayag Ramayana Part-5",
-      "description": "The epic narrates the life of Rama, a prince of Ayodhya in the kingdom of Kosala. The epic follows his fourteen-year exile to the forest urged",
-      "image_url": "https://static2.tripoto.com/media/filter/nl/img/1728/SpotDocument/1476093447_3798300550_a14669ce29_o.jpg.webp",
+      "description":
+          "The epic narrates the life of Rama, a prince of Ayodhya in the kingdom of Kosala. The epic follows his fourteen-year exile to the forest urged",
+      "image_url":
+          "https://static2.tripoto.com/media/filter/nl/img/1728/SpotDocument/1476093447_3798300550_a14669ce29_o.jpg.webp",
       "author": "Bob Brown",
       "author_image_url": "https://via.placeholder.com/30?text=BB"
     }
   ];
-
 
   _buildSearchMenu() {
     return Row(
@@ -89,6 +103,7 @@ class AnimatedVideos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorHandler.bgColor,
       body: Padding(
         padding: const EdgeInsets.all(0),
         child: Column(
@@ -109,30 +124,42 @@ class AnimatedVideos extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 5, bottom: 3),
-              height: 40,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: categories.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Chip(
-                      label: Text(categories[index]),
-                    ),
-                  );
-                },
-              ),
-            ),
+
             // Article Cards
             Expanded(
-              child: ListView.builder(
-                itemCount: 4, // Number of articles
-                itemBuilder: (_, index) =>ArticleCard( index: articles[index],),
-
-              ),
-            ),
+                child: Stack(
+              children: [
+                ListView.builder(
+                  padding: EdgeInsets.only(top: 40),
+                  itemCount: 4, // Number of articles
+                  itemBuilder: (_, index) => ArticleCard(
+                    index: articles[index],
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    color: Colors.transparent,
+                    margin: EdgeInsets.only(top: 5, bottom: 3),
+                    height: 40,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: categories.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Chip(
+                            label: Text(categories[index]),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                )
+              ],
+            )),
           ],
         ),
       ),
@@ -141,14 +168,16 @@ class AnimatedVideos extends StatelessWidget {
 }
 
 class ArticleCard extends StatelessWidget {
-  final  index;
+  final index;
 
   ArticleCard({required this.index});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2,
+      elevation: 20,
+      shadowColor: Colors.transparent,
+      color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -162,7 +191,8 @@ class ArticleCard extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
                 image: DecorationImage(
-                  image: NetworkImage(index['image_url']), // Placeholder image URL
+                  image:
+                      NetworkImage(index['image_url']), // Placeholder image URL
                   fit: BoxFit.cover,
                 ),
               ),
@@ -212,18 +242,18 @@ class ArticleCard extends StatelessWidget {
             //         ),
             //       ],
             //     ),
-                // ClipRRect(
-                //   borderRadius: BorderRadius.circular(8.0),
-                //   child: Image.network(
-                //     'https://via.placeholder.com/30', // Placeholder article logo URL
-                //     height: 30,
-                //     width: 30,
-                //     fit: BoxFit.cover,
-                //   ),
-                // ),
-          //     ],
-          //   ),
-           ],
+            // ClipRRect(
+            //   borderRadius: BorderRadius.circular(8.0),
+            //   child: Image.network(
+            //     'https://via.placeholder.com/30', // Placeholder article logo URL
+            //     height: 30,
+            //     width: 30,
+            //     fit: BoxFit.cover,
+            //   ),
+            // ),
+            //     ],
+            //   ),
+          ],
         ),
       ),
     );

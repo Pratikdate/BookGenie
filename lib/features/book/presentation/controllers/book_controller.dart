@@ -1,6 +1,4 @@
-import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../domain/ entities/book.dart';
@@ -28,6 +26,11 @@ class BookController extends GetxController with SingleGetTickerProviderMixin {
     fetchBookInPopular();
     fetchBookShelf();
   }
+
+
+
+
+
 
   Future<void> refreshBookInPopular({int count =3}) async {
 

@@ -373,7 +373,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
                 color: titleColor,
+
               ),
+
             ),
             Expanded(
               child: Stack(
@@ -469,19 +471,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           fontSize: 13,
                         ),
                       ),
-                      SizedBox(height: 24),
-                      Row(
+                      const SizedBox(height: 24),
+                      const Row(
                         children: <Widget>[
-                          const Icon(
+                          Icon(
                             Icons.star,
                             size: 18,
                             color: Colors.pink,
                           ),
                           SizedBox(width: 2),
                           Text(
-                            '',
+                            '7',
                             //"${book.rating}",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
                             ),
@@ -513,6 +515,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       right: 0,
       child: Container(
         decoration: BoxDecoration(
+          boxShadow: [BoxShadow(
+            color: Colors.black,
+            blurRadius: 2.0,
+          ),],
           color: Colors.white,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(RADIUS),
@@ -632,6 +638,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       bottom: 0,
       child: Container(
         decoration: const BoxDecoration(
+
+          boxShadow: [BoxShadow(
+            color: Colors.black,
+            blurRadius: 2.0,
+          ),],
           color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(RADIUS),
@@ -719,6 +730,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             title: const Text(' My Books'),
             onTap: () {
               Get.to(MyBookScreen(), binding: DependencyBinding());
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.upload_file),
+            title: const Text('Upload Book'),
+            onTap: () {
+
+
             },
           ),
           ListTile(
