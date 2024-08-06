@@ -36,6 +36,6 @@ In an era where digital technology has transformed our lives, traditional readin
 
 ## 👥  Contributors
 
-|[Günseli Ünsal](https://github.com/Pratikdate)|
+|[Pratik Date](https://github.com/Pratikdate)|
 |---|---|---|---|
 |<img src="[https://avatars.githubusercontent.com/u/93467749?v=4](https://avatars.githubusercontent.com/u/91735895?v=4)" style="width: 200px;">|
