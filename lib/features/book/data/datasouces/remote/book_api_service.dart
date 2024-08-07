@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
-import '../../../../../Auth/Tokens.dart';
+import '../../../../../core/Tokens.dart';
 import '../../../../../core/utils/constants.dart';
 
 class RemoteBookDataSource {

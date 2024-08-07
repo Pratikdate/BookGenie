@@ -1,17 +1,10 @@
-import 'dart:convert';
 import 'package:bookapp/core/ColorHandler.dart';
 import 'package:bookapp/core/FontHandler.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:bookapp/Auth/AuthScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'Controller/AuthController.dart';
-import 'Screens/ReadBook.dart';
-import '../Screens/BookHomeScreen.dart';
 import 'package:get/get.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'features/book/data/datasouces/remote/auth_api_service.dart';
 import 'features/book/data/repositories/auth_repository_impl.dart';
 import 'features/book/dependency_injection.dart';
@@ -19,12 +12,9 @@ import 'features/book/domain/repositories/auth_repository.dart';
 import 'features/book/domain/usecases/auth_usecase.dart';
 import 'features/book/presentation/controllers/auth_controller.dart';
 import 'features/book/presentation/pages/auth_screen.dart';
-import 'package:get/get.dart';
-import 'package:get/get.dart';
-
 import 'features/book/presentation/pages/home_screen.dart';
-
 import 'package:http/http.dart' as http;
+
 
 void init(){
 

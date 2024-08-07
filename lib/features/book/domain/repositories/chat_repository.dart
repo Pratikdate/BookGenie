@@ -11,4 +11,8 @@ abstract class ChatRepository {
   Future<String?> uploadBookForChat({required String bookUid});
   Future<bool> deleteBookFromChat({required String bookUid});
 
+  //Backend API
+  Future<bool?> setUpBookForChat({required String bookUid});
+  Future<ChatMessage> chatRequest({required String message,required String sourceID,required String bookUid});
+
 }

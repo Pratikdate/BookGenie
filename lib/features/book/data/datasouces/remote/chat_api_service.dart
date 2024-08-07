@@ -7,7 +7,8 @@ import 'package:bookapp/core/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
-import '../../../../../Auth/Tokens.dart';
+
+import '../../../../../core/Tokens.dart';
 
 class RemoteChatApiDataSource {
   final http.Client client;
@@ -31,6 +32,7 @@ class RemoteChatApiDataSource {
 
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
+
         return await fetchPdfFromNetwork(body['book_file']);
       } else {
         return false;
@@ -64,6 +66,9 @@ class RemoteChatApiDataSource {
     }
   }
 
+
+
+
   Future<String?> sendBookRequest(String file) async {
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
@@ -87,6 +92,8 @@ class RemoteChatApiDataSource {
       return null;
     }
   }
+
+
 
   Future<ChatModel> sendMessage({required String message, required String sourceID}) async {
     final String apiUrl = 'https://api.chatpdf.com/v1/chats/message';
@@ -149,4 +156,84 @@ class RemoteChatApiDataSource {
     }
     return false;
   }
+
+
+
+
+
+  //Request for setup the backend environment for chat with book
+
+  Future<bool?> setupBookForChat({required String bookUid}) async {
+    try {
+
+        final response = await http.get(
+          Uri.parse('${Constants.BASE_URL}/chatapi/chatpdf/${bookUid}'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ${await getToken()}',
+          },
+        );
+
+        if (response.statusCode == 200) {
+          return true;
+        }
+        return false;
+
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ChatModel> sendRequest({required String message, required String sourceID,required,required String bookUid}) async {
+
+    final String apiUrl = '${Constants.BASE_URL}/chatapi/chatpdf/$bookUid';
+    final Map<String, String> headers = {
+
+      'Authorization': 'Token ${await getToken()}',
+      'Content-Type': 'application/json',
+    };
+
+    final Map<String, dynamic> data = {
+      'content': message
+    };
+
+    try {
+      var response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 200) {
+        final body = jsonDecode(response.body);
+        return ChatModel(
+          sourceID: sourceID,
+          createdAt: DateTime.now().millisecondsSinceEpoch,
+          id: const Uuid().v4(),
+          text: body['content'],
+        );
+      } else {
+        throw Exception('Failed to load response');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

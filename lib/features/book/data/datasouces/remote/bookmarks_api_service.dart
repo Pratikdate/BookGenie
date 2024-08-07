@@ -2,8 +2,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-
-import '../../../../../Auth/Tokens.dart';
+import '../../../../../core/Tokens.dart';
 import '../../../../../core/utils/constants.dart';
 import '../../models/bookmark_model.dart';
 

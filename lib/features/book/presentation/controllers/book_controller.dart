@@ -1,6 +1,4 @@
-
 import 'package:get/get.dart';
-
 import '../../domain/ entities/book.dart';
 import '../../domain/usecases/fetch_books_usecase.dart';
 

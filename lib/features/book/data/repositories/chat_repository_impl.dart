@@ -32,4 +32,22 @@ class ChatRepositoryImpl implements ChatRepository {
 
   }
 
+
+  //Chat From Backend API
+  @override
+  Future<ChatMessage> chatRequest({required String message, required String sourceID, required String bookUid}) async {
+    final chatResponseData=await remoteChatApiDataSource.sendRequest(message: message, sourceID: sourceID, bookUid: bookUid);
+    return ChatMessage(
+        sourceID: chatResponseData.sourceID,
+        createdAt: chatResponseData.createdAt,
+        id: chatResponseData.id,
+        text: chatResponseData.text
+    );
+  }
+
+  @override
+  Future<bool?> setUpBookForChat({required String bookUid}) async {
+    return await remoteChatApiDataSource.setupBookForChat(bookUid: bookUid);
+  }
+
 }

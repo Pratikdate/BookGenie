@@ -56,6 +56,8 @@ class DependencyBinding extends Bindings {
     Get.lazyPut(() => FetchBookPDFUseCase(Get.find()));
     Get.lazyPut(() => FetchBookmarksUseCase(Get.find()));
     Get.lazyPut(() => FetchListBookmarksUseCase(Get.find()));
+    Get.lazyPut(() => ChatRequestUseCase(Get.find()));
+    Get.lazyPut(() => SetUpBookForChatUseCase(Get.find()));
     Get.lazyPut(() => SetBookmarksUseCase(Get.find()));
     Get.lazyPut(() => DeleteBookmarksUseCase(Get.find()));
     Get.lazyPut(() => UploadPdfForChatUseCase(Get.find()));
@@ -88,7 +90,9 @@ class DependencyBinding extends Bindings {
     Get.lazyPut(() => ChatTabController(
         chatMessageUseCase: Get.find(),
         uploadPdfForChatUseCase: Get.find(),
-        deleteChatBookUseCase: Get.find()
+        deleteChatBookUseCase: Get.find(),
+        chatRequestUseCase: Get.find(),
+        setUpBookForChatUseCase: Get.find()
 
     ));
   }

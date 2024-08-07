@@ -33,3 +33,32 @@ class DeleteChatBookUseCase {
     return await chatRepository.deleteBookFromChat(bookUid: bookUid);
   }
 }
+
+
+//Chat From Backend
+class ChatRequestUseCase{
+
+  final ChatRepository chatRepository;
+
+  ChatRequestUseCase(this.chatRepository);
+
+  Future<ChatMessage> execute({required String message,required String sourceID,required String bookUid}) async {
+    return await chatRepository.chatRequest(message: message, sourceID: sourceID, bookUid: bookUid);
+  }
+
+
+}
+
+class SetUpBookForChatUseCase{
+
+  final ChatRepository chatRepository;
+
+  SetUpBookForChatUseCase(this.chatRepository);
+
+  Future<bool?> execute({required String bookUid}) async {
+    return await chatRepository.setUpBookForChat(bookUid: bookUid);
+  }
+
+
+}
+

@@ -16,7 +16,7 @@ class ChatTabViewScreen extends StatefulWidget {
 
 class _ChatTabViewScreenState extends State<ChatTabViewScreen> {
 
-  final ChatTabController controller = Get.put(ChatTabController(chatMessageUseCase: Get.find(), uploadPdfForChatUseCase: Get.find(), deleteChatBookUseCase: Get.find()));
+  final ChatTabController controller = Get.put(ChatTabController(chatMessageUseCase: Get.find(), uploadPdfForChatUseCase: Get.find(), deleteChatBookUseCase: Get.find(), chatRequestUseCase: Get.find(), setUpBookForChatUseCase: Get.find()));
 
   @override
   void initState() {
