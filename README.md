@@ -10,7 +10,7 @@ In an era where digital technology has transformed our lives, traditional readin
 
 ## 🎥  Demo Video Link
 
-<a href="https://youtu.be/EyB9gsflPqU?si=H-VL7VCr1e6tWX-W"> <img src="/img/youtube.png" alt="BookGenie" style="width: 900px;"> </a>
+<a href="https://youtu.be/zcL3Yu9lCPw"> <img src="[/img/youtube.png](https://github.com/user-attachments/assets/8cd73f57-f9eb-4eef-bc02-91704e09ded2)" alt="BookGenie" style="width: 900px;"> </a>
 
 ## 📲 How to Download
   For Android User
