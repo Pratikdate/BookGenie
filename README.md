@@ -36,6 +36,6 @@ In an era where digital technology has transformed our lives, traditional readin
 
 ## 👥  Contributors
 
-<a href="https://github.com/Pratikdate/BookGenie/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Pratikdate/BookGenie" />
-</a>
+|[Pooja Bhore](https://github.com/poojab2805)|[Santosh Waghmare](https://github.com/santoshw03)|[Pratik Date](https://github.com/Pratikdate)
+|---|---|---|
+|<img src="https://avatars.githubusercontent.com/u/163244933?v=4" style="width: 200px;">|<img src="https://avatars.githubusercontent.com/u/111411922?v=4" style="width: 200px;">|<img src="https://avatars.githubusercontent.com/u/91735895?v=4" style="width: 200px;">
