@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../../domain/ entities/chat_message.dart';
 import '../../domain/repositories/chat_repository.dart';
 import '../datasouces/remote/chat_api_service.dart';
@@ -29,6 +31,11 @@ class ChatRepositoryImpl implements ChatRepository {
   @override
   Future<String?> uploadBookForChat({required String bookUid}) async {
     return await remoteChatApiDataSource.fetchUrlfromNetwork(bookUid: bookUid);
+
+  }
+  @override
+  Future<String?> sendBookRequest({required File file}) async {
+    return await remoteChatApiDataSource.sendBookRequest(pdfFile: file);
 
   }
 

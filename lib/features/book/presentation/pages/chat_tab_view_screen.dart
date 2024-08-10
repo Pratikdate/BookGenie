@@ -1,4 +1,5 @@
 
+import 'package:bookapp/features/book/domain/usecases/chat_usecase.dart';
 import 'package:bookapp/features/book/presentation/controllers/chat_tab_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
@@ -16,13 +17,15 @@ class ChatTabViewScreen extends StatefulWidget {
 
 class _ChatTabViewScreenState extends State<ChatTabViewScreen> {
 
-  final ChatTabController controller = Get.put(ChatTabController(chatMessageUseCase: Get.find(), uploadPdfForChatUseCase: Get.find(), deleteChatBookUseCase: Get.find(), chatRequestUseCase: Get.find(), setUpBookForChatUseCase: Get.find()));
-
+  late final ChatTabController controller;
   @override
   void initState() {
     super.initState();
+   controller = Get.find<ChatTabController>();
     //controller.uploadBookForChatNetwork();
   }
+
+
 
   @override
   Widget build(BuildContext context) {

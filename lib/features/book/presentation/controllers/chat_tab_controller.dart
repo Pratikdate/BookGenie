@@ -18,6 +18,7 @@ class ChatTabController extends GetxController {
 
   final ChatMessageUseCase chatMessageUseCase;
   final UploadPdfForChatUseCase uploadPdfForChatUseCase;
+  final SendPdfForChatUseCase sendPdfForChatUseCase;
   final DeleteChatBookUseCase deleteChatBookUseCase;
   final TabSController tabSController = Get.find<TabSController>();
 
@@ -28,6 +29,7 @@ class ChatTabController extends GetxController {
   ChatTabController({
     required this.chatMessageUseCase,
     required this.uploadPdfForChatUseCase,
+    required this.sendPdfForChatUseCase,
     required this.deleteChatBookUseCase,
 
     //Backend API Setup
@@ -51,18 +53,33 @@ class ChatTabController extends GetxController {
       id: "123",
       text: "Hello! How can I assist you today?",
     );
-    await uploadBookForChatNetwork(); // Await the async method
+
+    if(tabSController.isFilePicked.value){
+      //By Gemini
+      print("make ready book for backend chat");
+      await uploadBookForChatNetwork(); // Await the async method
+    }
+    else if(tabSController.isAccetFilePicked.value){
+      //By API
+      print("Through api");
+      sendPdfForChat();
+    }
 
     messages.add(message);
   }
 
   @override
   void onClose() {
+    bookLoad.value = false;
+    sourceID.value = '';
+    isLoading.value = true;
+    bookUid.value = '';
     super.onClose();
   }
 
-  Future<String?> uploadBookForChatNetwork() async {
-    if (sourceID.value.isEmpty) {
+  //for upload pdf file handle
+  Future<void> sendPdfForChat() async{
+    if(tabSController.isAccetFilePicked.value) {
       bookLoad(false);
       try {
         Get.snackbar(
@@ -73,10 +90,9 @@ class ChatTabController extends GetxController {
             colorText: Colors.white
         );
 
-        final data = await uploadPdfForChatUseCase.execute(
-            bookUid: bookUid.value);
-
-        await setBookForChat();
+        final data = await sendPdfForChatUseCase.execute(
+           file: tabSController.file!
+        );
 
 
         if (data == null) {
@@ -91,8 +107,54 @@ class ChatTabController extends GetxController {
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
           );
-          return data;
+
         }
+      } catch (e) {
+        bookLoad.value = false;
+        rethrow;
+      }
+
+    }
+
+  }
+
+
+
+  Future<String?> uploadBookForChatNetwork() async {
+    if (sourceID.value.isEmpty) {
+      bookLoad(false);
+      try {
+        Get.snackbar(
+            "Mr.Chat is loading",
+            "you get notify when it ready for chat",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: ColorHandler.normalFont,
+            colorText: Colors.white
+        );
+
+
+
+        // final data = await uploadPdfForChatUseCase.execute(
+        //     bookUid: bookUid.value
+        // );
+
+        await setBookForChat();
+
+
+        // if (data == null) {
+        //   bookLoad.value = true;
+        //   return null;
+        // } else {
+        //   bookLoad.value = true;
+        //   sourceID.value = data;
+        //   Get.snackbar(
+        //     "Mr.Chat is ready!",
+        //     "Now you can chat with Mr.Chat",
+        //     snackPosition: SnackPosition.BOTTOM,
+        //     backgroundColor: Colors.green,
+        //   );
+        //   return data;
+        // }
       } catch (e) {
         bookLoad.value = false;
         rethrow;
@@ -109,13 +171,15 @@ class ChatTabController extends GetxController {
       id: const Uuid().v4(),
       text: message.text,
     );
-
     addMessage(textMessage);
 
-    //await requestBookForChat(message.text);
 
     //For Gemini
-    await requestBookForChatToGemini(message.text);
+    if(tabSController.isFilePicked.value) {
+      await requestBookForChatToGemini(message.text);
+    }else if(tabSController.isAccetFilePicked.value) {
+      await requestBookForChat(message.text);
+    }
   }
 
   Future<void> requestBookForChat(String message) async {
@@ -144,7 +208,7 @@ class ChatTabController extends GetxController {
   //Backend setup for API
 
   Future<void> requestBookForChatToGemini(String message) async {
-    if (sourceID.value.isNotEmpty) {
+    if (sourceID.value.isEmpty) {
       try {
         final response = await chatRequestUseCase.execute(
             message: message, sourceID: sourceID.value, bookUid: bookUid.value);

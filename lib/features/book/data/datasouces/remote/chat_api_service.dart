@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:bookapp/features/book/data/models/chat_message_model.dart';
 import 'package:uuid/uuid.dart';
+
+import 'dart:typed_data';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:bookapp/core/utils/constants.dart';
 import 'package:http/http.dart' as http;
@@ -57,7 +59,7 @@ class RemoteChatApiDataSource {
         final tempDir = await getTemporaryDirectory();
         File file = File(join(tempDir.path, 'downloaded.pdf'));
         await file.writeAsBytes(bytes);  // Save the downloaded bytes to the file
-        return await sendBookRequest(file.path);
+        return await sendBookRequest(file:file.path);
       } else {
         throw Exception('Failed to load PDF');
       }
@@ -69,11 +71,19 @@ class RemoteChatApiDataSource {
 
 
 
-  Future<String?> sendBookRequest(String file) async {
+  Future<String?> sendBookRequest({String? file,File? pdfFile}) async {
     try {
+
+
       var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
       request.headers.addAll(headers);
-      request.files.add(await http.MultipartFile.fromPath('file', file));
+      request.files.add((file !=null)?await http.MultipartFile.fromPath('file', file!):
+      http.MultipartFile.fromBytes(
+        'file',
+        (await pdfFile?.readAsBytes()) as List<int>,
+        filename: pdfFile?.path.split('/').last,
+      )
+      );
 
       var response = await request.send();
 
@@ -207,7 +217,7 @@ class RemoteChatApiDataSource {
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
         return ChatModel(
-          sourceID: sourceID,
+          sourceID: '123',
           createdAt: DateTime.now().millisecondsSinceEpoch,
           id: const Uuid().v4(),
           text: body['content'],

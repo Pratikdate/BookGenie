@@ -22,8 +22,13 @@ class _BookTabViewScreenState extends State<BookTabViewScreen> {
   @override
   void initState() {
     super.initState();
+  }
+  @override
+  void dispose() {
+    // Dispose any resources or controllers that you have initialized
 
 
+    super.dispose();
   }
 
   @override
@@ -36,32 +41,38 @@ class _BookTabViewScreenState extends State<BookTabViewScreen> {
 
     return Scaffold(
       body: Obx(() {
-        if (controller.isLoadingPDF.value) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (controller.isFilePicked.value || controller.file != null) {
-          return SfPdfViewer.file(
-            controller.file!,
-            key: controller.pdfViewerKey,
-            controller: controller.pdfViewerController,
-            onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
-              controller.selectedTextLines = details.selectedText;
-            },
-            onPageChanged: (PdfPageChangedDetails details) {
-              controller.savePage();
-              controller.isSearch.value = false;
-            },
-          );
-        } else {
-          return Center(
-            child: ElevatedButton(
-              onPressed: () {
-                //controller.handlePickedFile();
+          if (controller.isLoadingPDF.value ) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (controller.isFilePicked.value && controller.file != null || controller.isAccetFilePicked.value) {
+            return SfPdfViewer.file(
+              controller.file!,
+              key: controller.pdfViewerKey,
+              controller: controller.pdfViewerController,
+              onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
+                controller.selectedTextLines = details.selectedText;
               },
-              child: Text("Select PDF File"),
-            ),
-          );
+              onPageChanged: (PdfPageChangedDetails details) {
+                controller.savePage();
+                controller.isSearch.value = false;
+              },
+
+            );
+          }
+
+          else {
+            return const Center(
+              child:  Text("File not found"),
+              // child: ElevatedButton(
+              //   onPressed: () {
+              //     //controller.handlePickedFile();
+              //   },
+              //   child: Text("Select PDF File"),
+              // ),
+            );
+          }
         }
-      }),
+
+        ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromRGBO(51, 51, 51, 1),
         onPressed: () {

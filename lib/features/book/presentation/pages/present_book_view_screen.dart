@@ -1,5 +1,3 @@
-import 'package:bookapp/Screens/BookHomeScreen.dart';
-import 'package:bookapp/Screens/ReadBook.dart';
 import 'package:bookapp/core/IconsHandler.dart';
 import 'package:bookapp/features/book/presentation/pages/tabs_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +8,6 @@ import '../../../../core/ColorHandler.dart';
 import '../../../../core/FontHandler.dart';
 import '../../dependency_injection.dart';
 import 'audio_book_screen.dart';
-import 'book_tab_view_screen.dart';
 
 class PresentBookViewScreen extends StatefulWidget {
   const PresentBookViewScreen({super.key});

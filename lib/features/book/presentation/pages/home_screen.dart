@@ -2,6 +2,7 @@
 import 'package:bookapp/features/book/presentation/controllers/book_controller.dart';
 import 'package:bookapp/features/book/presentation/controllers/menu_controllers/userprofile_controller.dart';
 import 'package:bookapp/features/book/presentation/pages/present_book_view_screen.dart';
+import 'package:bookapp/features/book/presentation/pages/tabs_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:math'as math;
@@ -11,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import '../../dependency_injection.dart';
 import '../../domain/ entities/book.dart';
+import '../controllers/tab_controller.dart';
 import '../widgets/refresh_indicator.dart';
 import 'menu_pages/animation_videos.dart';
 import 'menu_pages/articles.dart';
@@ -45,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late Animation<double> valueAnimation;
   var scaffoldKey = GlobalKey<ScaffoldState>();
   late BookController controller;
+  late TabSController tab_controller;
   late UserprofileController controllerprofile;
 
   //controllers
@@ -62,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     popularController.dispose();
     _controller.dispose();
     controller.dispose();
+    tab_controller.dispose();
 
     super.dispose();
   }
@@ -76,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ..addListener(handlePopularBookScrolling);
     controllerprofile = Get.find();
     controller = Get.find();
+    tab_controller=Get.find();
   }
 
   _init() {
@@ -722,6 +727,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             leading: const Icon(Icons.person),
             title: const Text(' My Profile '),
             onTap: () {
+              Navigator.pop(context);
               Get.to(ProfileScreen());
             },
           ),
@@ -729,13 +735,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             leading: const Icon(Icons.book),
             title: const Text(' My Books'),
             onTap: () {
+              Navigator.pop(context);
               Get.to(MyBookScreen(), binding: DependencyBinding());
             },
           ),
           ListTile(
             leading: const Icon(Icons.upload_file),
             title: const Text('Upload Book'),
-            onTap: () {
+            onTap: () async {
+              tab_controller.isFilePicked.value=false;
+              await tab_controller.handlePickedFile();
+              Get.to(()=>const BookTabScreen(),binding:DependencyBinding());
+
 
 
             },
@@ -744,13 +755,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             leading: const Icon(Icons.article),
             title: const Text(' Article'),
             onTap: () {
-              Get.to(ArticleScreen());
+              Navigator.pop(context);
+              Get.to(ArticleScreen(),binding:DependencyBinding() );
             },
           ),
           ListTile(
             leading: const Icon(Icons.video_label),
             title: const Text(' Animated Videos '),
             onTap: () {
+              Navigator.pop(context);
               Get.to(AnimatedVideos());
             },
           ),
@@ -758,6 +771,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             leading: const Icon(Icons.workspace_premium),
             title: const Text(' Go Premium '),
             onTap: () {
+              Navigator.pop(context);
               Get.to(GoPremium());
             },
           ),

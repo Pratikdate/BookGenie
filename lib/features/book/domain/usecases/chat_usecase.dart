@@ -1,6 +1,8 @@
 
 
 
+import 'dart:io';
+
 import 'package:bookapp/features/book/domain/%20entities/chat_message.dart';
 import 'package:bookapp/features/book/domain/repositories/chat_repository.dart';
 
@@ -23,6 +25,18 @@ class UploadPdfForChatUseCase {
     return await chatRepository.uploadBookForChat(bookUid: bookUid);
   }
 }
+
+
+class SendPdfForChatUseCase {
+  final ChatRepository chatRepository;
+
+  SendPdfForChatUseCase(this.chatRepository);
+
+  Future<String?> execute({required File file}) async {
+    return await chatRepository.sendBookRequest(file: file);
+  }
+}
+
 
 class DeleteChatBookUseCase {
   final ChatRepository chatRepository;

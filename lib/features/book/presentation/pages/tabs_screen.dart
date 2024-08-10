@@ -6,15 +6,11 @@ import 'package:bookapp/features/book/presentation/controllers/bookmark_controll
 import 'package:bookapp/features/book/presentation/pages/chat_tab_view_screen.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/IconsHandler.dart';
-import '../../data/datasouces/remote/bookmarks_api_service.dart';
-import '../../data/repositories/bookmark_repository_impl.dart';
-import '../../domain/repositories/bookmark_repository.dart';
 import '../../domain/usecases/fetch_bookmarks.dart';
 import '../controllers/tab_controller.dart';
 import 'package:get/get.dart';
 import 'book_tab_view_screen.dart';
 
-import 'package:http/http.dart' as http;
 
 
 
@@ -37,9 +33,10 @@ class _BookTabScreenState extends State<BookTabScreen> with SingleTickerProvider
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabChange);
+    controller = Get.find<TabSController>();
 
     if (Get.arguments != null && Get.arguments.length >= 2) {
-      controller = Get.find<TabSController>();
+
       controller.fileUrl.value = Get.arguments[0];
       controller.fileUID.value = Get.arguments[1];
 
@@ -53,11 +50,25 @@ class _BookTabScreenState extends State<BookTabScreen> with SingleTickerProvider
       bookmarkCntroller.FetchBookmarks();
       controller.fetchBookPDF();
 
-    } else {
+    }
+    else if(controller.isAccetFilePicked.value){
+      print('Opening .pdf for read');
+
+
+
+
+    }
+    else {
       print('Arguments are not provided');
       Get.back();
     }
   }
+
+
+
+
+
+
 
   void _handleTabChange() {
     if (!_tabController.indexIsChanging) {
@@ -76,7 +87,10 @@ class _BookTabScreenState extends State<BookTabScreen> with SingleTickerProvider
               bottom: Radius.circular(30),
             ),
           ),
-          leading: const Align(
+
+          leading: controller.isAccetFilePicked.value?
+              const SizedBox()
+              :const Align(
             alignment: Alignment.topRight,
             child: ThreeDotMenuButton(),
           ),
