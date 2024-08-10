@@ -35,7 +35,7 @@ In an era where digital technology has transformed our lives, traditional readin
 
 
 ## 👥  Contributors
-@santoshw03
+
 
 <a href="https://github.com/Pratikdate/BookGenei/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Pratikdate/BookGenei" />
