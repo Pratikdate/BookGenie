@@ -8,6 +8,9 @@ class Book {
   final String fileUrl;
   final String? description;
   final String? published;
+  final String? genre;
+  final String? audiobook_file;
+  final String? audiobook_duration;
 
   Book({
     required this.uid,
@@ -17,6 +20,9 @@ class Book {
     required this.fileUrl,
     this.description,
     this.published,
+    this.genre,
+    this.audiobook_file,
+    this.audiobook_duration,
   });
 
   factory Book.fromJson(Map<String, dynamic> json) {
@@ -28,6 +34,9 @@ class Book {
       fileUrl: "${Constants.BASE_URL}/${json['book_file']}" ?? '',
       description: json['description'] ?? '',
       published: json['publication_date'] ?? '',
+      genre: json['genre'] ?? '',
+      audiobook_file: json['audiobook_file'] ?? '',
+      audiobook_duration: json['audiobook_duration'] ?? '',
     );
   }
 

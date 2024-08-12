@@ -71,6 +71,7 @@ dev_dependencies:
   image_cropper: ^7.1.0
   custom_refresh_indicator: ^4.0.1
   audioplayers: ^6.0.0
+  tutorial_coach_mark: ^1.2.11
 
 
 
@@ -98,6 +99,7 @@ flutter:
      - asset/image/
      - asset/.env
      - asset/logo_BookGeany.png
+     - asset/epic-background-orchestral-instrumental-music-for-short-videos-161639.mp3
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

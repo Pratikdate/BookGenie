@@ -225,11 +225,11 @@ class _ThreeDotMenuButtonState extends State<ThreeDotMenuButton> {
               textAlign: TextAlign.left,
             ),
           ),
-          PopupMenuItem<String>(
+          const PopupMenuItem<String>(
             value: "Show Bookmarks",
             child: ShowBookmarksButton(),
           ),
-          PopupMenuItem<String>(
+          const PopupMenuItem<String>(
             value: "Exit",
             child: FontHandler(
               'Exit',
@@ -239,7 +239,7 @@ class _ThreeDotMenuButtonState extends State<ThreeDotMenuButton> {
           ),
         ];
       },
-      icon: Icon(
+      icon: const Icon(
         IconHandler.three_dot_menue,
         color: Colors.white,
       ),

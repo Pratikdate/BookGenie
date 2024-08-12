@@ -1,3 +1,4 @@
+import 'dart:async';
 
 import 'package:bookapp/features/book/presentation/controllers/book_controller.dart';
 import 'package:bookapp/features/book/presentation/controllers/menu_controllers/userprofile_controller.dart';
@@ -5,13 +6,14 @@ import 'package:bookapp/features/book/presentation/pages/present_book_view_scree
 import 'package:bookapp/features/book/presentation/pages/tabs_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
-import 'dart:math'as math;
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import '../../dependency_injection.dart';
 import '../../domain/ entities/book.dart';
+import '../controllers/showcase_controller.dart';
 import '../controllers/tab_controller.dart';
 import '../widgets/refresh_indicator.dart';
 import 'menu_pages/animation_videos.dart';
@@ -19,6 +21,9 @@ import 'menu_pages/articles.dart';
 import 'menu_pages/go_preminum.dart';
 import 'menu_pages/my_bookmarks.dart';
 import 'menu_pages/profile_screen.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -58,6 +63,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final white = Colors.white;
   final closedLabelColor = Color(0xff9fa5b2);
 
+  //! do true
+  late bool _isTutorialShown = false;
+  TutorialCoachMark? tutorialCoachMark;
+  List<TargetFocus> targets = [];
+  final showCaseController = Get.put(ShowCaseProvider());
+
   @override
   void dispose() {
     // Dispose any resources or controllers that you have initialized
@@ -80,7 +91,115 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ..addListener(handlePopularBookScrolling);
     controllerprofile = Get.find();
     controller = Get.find();
-    tab_controller=Get.find();
+    tab_controller = Get.find();
+
+    //ShowCase Provider
+    _checkTutorialStatus();
+
+    if (!_isTutorialShown) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Timer(const Duration(milliseconds: 350), () {
+          _showTutorialCoachmark();
+        });
+      });
+    }
+  }
+
+  void _checkTutorialStatus() async {
+    // // Update tutorial status
+    // final prefs = await SharedPreferences.getInstance();
+    // await prefs.setBool('isTutorialShown', false);
+
+    final prefs = await SharedPreferences.getInstance();
+    final isTutorialShown = prefs.getBool('isTutorialShown') ?? false;
+
+    setState(() {
+      _isTutorialShown = isTutorialShown;
+    });
+  }
+
+  void _showTutorialCoachmark() async {
+    initTarget();
+
+    tutorialCoachMark = TutorialCoachMark(
+      targets: targets,
+      hideSkip: true,
+      pulseEnable: false,
+      colorShadow: Colors.grey,
+    )..show(context: context);
+
+    // Update tutorial status
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isTutorialShown', true);
+  }
+
+  initTarget() {
+    print("Target focus initialise");
+    targets = [
+      TargetFocus(
+        identify: "bookShelf-Key",
+        keyTarget: showCaseController.bookShelfKey,
+        color: Colors.transparent,
+        shape: ShapeLightFocus.RRect,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return CoachMarkDesc(
+                text: "Tap hear to view all new and suggested book here",
+                onNext: () {
+                  controller.next();
+                },
+                heading: "bookShelf Page",
+                next: '',
+              );
+            },
+          )
+        ],
+      ),
+      TargetFocus(
+        identify: "popularPage-Key",
+        keyTarget: showCaseController.popularPageKey,
+        color: Colors.transparent,
+        shape: ShapeLightFocus.RRect,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return CoachMarkDesc(
+                text: "Tap hear to view all  popular Books here",
+                onNext: () {
+                  controller.next();
+                },
+                heading: "Popular Page",
+                next: '',
+              );
+            },
+          )
+        ],
+      ),
+      TargetFocus(
+        identify: "search-Key",
+        keyTarget: showCaseController.searchKey,
+        color: Colors.transparent,
+        shape: ShapeLightFocus.RRect,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return CoachMarkDesc(
+                text: "Tap hear to view all Navigation's",
+                onNext: () {
+                  controller.next();
+                },
+                heading: "Menu tab",
+                next: '',
+              );
+            },
+          )
+        ],
+      ),
+    ];
   }
 
   _init() {
@@ -164,15 +283,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
         SizedBox(width: 24),
         IconButton(
-            onPressed: () {
-              controllerprofile.fetchUserProfile();
-              scaffoldKey.currentState?.openDrawer();
-            },
-            icon: const Icon(
-              Icons.menu,
-              color: Colors.white,
-              size: 30,
-            ))
+              key: showCaseController.searchKey,
+              onPressed: () {
+                controllerprofile.fetchUserProfile();
+                scaffoldKey.currentState?.openDrawer();
+              },
+              icon: const Icon(
+                Icons.menu,
+                color: Colors.white,
+                size: 30,
+              ))
+
       ],
     );
   }
@@ -254,7 +375,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       left: 0,
       right: 0,
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: ExactAssetImage('asset/image/tab.png'),
             fit: BoxFit.cover,
@@ -364,7 +485,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   _buildTitle(String title, Color titleColor, double animValue,
-      {required Function() onTap}) {
+      {required Key key, required Function() onTap}) {
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -373,14 +494,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         child: Row(
           children: <Widget>[
             Text(
+              key: key,
               title,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
                 color: titleColor,
-
               ),
-
             ),
             Expanded(
               child: Stack(
@@ -455,12 +575,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         children: <Widget>[
                           Text(
                             book.name ?? "",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                             ),
                           ),
-                          Text(
+                          const Text(
                             '',
                             //"\$ ${book.price}",
                             style: TextStyle(fontWeight: FontWeight.w500),
@@ -520,10 +640,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       right: 0,
       child: Container(
         decoration: BoxDecoration(
-          boxShadow: [BoxShadow(
-            color: Colors.black,
-            blurRadius: 2.0,
-          ),],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black,
+              blurRadius: 2.0,
+            ),
+          ],
           color: Colors.white,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(RADIUS),
@@ -537,14 +659,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               Colors.orange,
               valueAnimation.value,
               onTap: _forward,
+              key: showCaseController.popularPageKey,
             ),
             Obx(() {
               return Expanded(
                 child: CheckMarkIndicator(
-                  onRefresh:() async =>await controller.refreshBookInPopular(),
+                  onRefresh: () async =>
+                      await controller.refreshBookInPopular(),
                   child: ListView.builder(
                     controller: popularController,
-                    padding: const EdgeInsets.only(top: 6, bottom: BUTTON_HEIGHT + 6),
+                    padding: const EdgeInsets.only(
+                        top: 6, bottom: BUTTON_HEIGHT + 6),
                     shrinkWrap: true,
                     itemBuilder: (_, index) =>
                         _buildPopularItem(controller.booksInPopular[index]),
@@ -643,11 +768,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       bottom: 0,
       child: Container(
         decoration: const BoxDecoration(
-
-          boxShadow: [BoxShadow(
-            color: Colors.black,
-            blurRadius: 2.0,
-          ),],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black,
+              blurRadius: 2.0,
+            ),
+          ],
           color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(RADIUS),
@@ -663,12 +789,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               Colors.black45,
               1 - valueAnimation.value,
               onTap: _reverse,
+              key: showCaseController.bookShelfKey,
             ),
-
             Obx(() {
-              return
-                CheckMarkIndicator(
-                  onRefresh:() async =>await controller.refreshBookShelf(), // Your refresh logic
+              return CheckMarkIndicator(
+                onRefresh: () async =>
+                    await controller.refreshBookShelf(), // Your refresh logic
 
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -680,15 +806,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         .toList(),
                   ),
                 ),
-
-            );
-             })
+              );
+            })
           ],
         ),
       ),
     );
   }
-
 
   _drawer() {
     return Drawer(
@@ -743,12 +867,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             leading: const Icon(Icons.upload_file),
             title: const Text('Upload Book'),
             onTap: () async {
-              tab_controller.isFilePicked.value=false;
+              tab_controller.isFilePicked.value = false;
               await tab_controller.handlePickedFile();
-              Get.to(()=>const BookTabScreen(),binding:DependencyBinding());
-
-
-
+              Get.to(() => const BookTabScreen(), binding: DependencyBinding());
             },
           ),
           ListTile(
@@ -756,7 +877,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             title: const Text(' Article'),
             onTap: () {
               Navigator.pop(context);
-              Get.to(ArticleScreen(),binding:DependencyBinding() );
+              Get.to(ArticleScreen(), binding: DependencyBinding());
             },
           ),
           ListTile(
@@ -818,115 +939,74 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 }
 
-//
-// class Book {
-//   final String name;
-//   final String author;
-//   final int progress;
-//   final String image;
-//   final String price;
-//   final double rating;
-//
-//   Book({
-//     required this.name,
-//     required this.author,
-//     required this.progress,
-//     required this.image,
-//     this.price = "",
-//     this.rating = 0.0,
-//   });
-// }
-//
-// final booksInShelf = [
-//   Book(
-//     name: "Cleansed by dead",
-//     author: "Catherine finger",
-//     progress: 50,
-//     image: "asset/image/1.jpg",
-//   ),
-//   Book(
-//     name: "A thin veil",
-//     author: "Jane Gorman",
-//     progress: 34,
-//     image: "asset/image/2.jpg",
-//   ),
-//   Book(
-//     name: "Be mine",
-//     author: "Rick mofina",
-//     progress: 38,
-//     image: "asset/image/3.jpg",
-//   ),
-//   Book(
-//     name: "Rick mofina",
-//     author: "Before sunrise",
-//     progress: 94,
-//     image: "asset/image/4.jpg",
-//   ),
-//   Book(
-//     name: "Bullet in the blue sky",
-//     author: "Bill larkin",
-//     progress: 80,
-//     image: "asset/image/5.jpg",
-//   ),
-// ];
-//
-// final booksInPopular = [
-//   Book(
-//     name: "Cleansed by dead",
-//     author: "Catherine finger",
-//     progress: 50,
-//     image: "asset/image/7.jpg",
-//     rating: 8.2,
-//     price: "9.95",
-//   ),
-//   Book(
-//     name: "A thin veil",
-//     author: "Jane Gorman",
-//     progress: 34,
-//     image: "asset/image/8.jpg",
-//     rating: 8.2,
-//     price: "11.95",
-//   ),
-//   Book(
-//     name: "Be mine",
-//     author: "Rick mofina",
-//     progress: 38,
-//     image: "asset/image/9.jpg",
-//     rating: 9.2,
-//     price: "8.95",
-//   ),
-//   Book(
-//     name: "Rick mofina",
-//     author: "Before sunrise",
-//     rating: 6.4,
-//     price: "6.95",
-//     progress: 94,
-//     image: "asset/image/10.jpg",
-//   ),
-//   Book(
-//     name: "Bullet in the blue sky",
-//     rating: 7.4,
-//     price: "12.95",
-//     author: "Bill larkin",
-//     progress: 80,
-//     image: "asset/image/11.jpg",
-//   ),
-//   Book(
-//     name: "Bullet in the blue sky",
-//     author: "Bill larkin",
-//     progress: 80,
-//     image: "asset/image/12.jpg",
-//     rating: 8.2,
-//     price: "8.99",
-//   ),
-//   Book(
-//     name: "Bullet in the blue sky",
-//     author: "Bill larkin",
-//     progress: 80,
-//     image: "asset/image/13.jpg",
-//     rating: 8.2,
-//     price: "8.99",
-//   ),
-// ];
-//
-//
+class CoachMarkDesc extends StatelessWidget {
+  final String text;
+  final String heading;
+  final VoidCallback onNext;
+  final String next;
+
+  const CoachMarkDesc({
+    Key? key,
+    required this.text,
+    required this.heading,
+    required this.onNext,
+    this.next = '',
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Access the theme data directly from context
+    final ThemeData theme = Theme.of(context);
+
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 4.0,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            heading,
+            style: theme.textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ) ??
+                TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+          ),
+          SizedBox(height: 8.0),
+          Text(
+            text,
+            style: theme.textTheme.bodyMedium?.copyWith(
+                  color: Colors.black54,
+                ) ??
+                TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.black54,
+                ),
+          ),
+          SizedBox(height: 16.0),
+          Align(
+            alignment: Alignment.centerRight,
+            child: ElevatedButton(
+              onPressed: onNext,
+              child: Text(next.isEmpty ? 'Next' : next),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -20,6 +20,7 @@ class RemoteBookDataSource {
 
       if (response.statusCode == 200) {
         final List<dynamic> body = json.decode(response.body);
+
         return List<Map<String, dynamic>>.from(body);
       } else {
         throw Exception('Failed to load bookshelf data');
