@@ -20,6 +20,7 @@ class RemoteBookDataSource {
 
       if (response.statusCode == 200) {
         final List<dynamic> body = json.decode(response.body);
+        print(body);
 
         return List<Map<String, dynamic>>.from(body);
       } else {
@@ -29,7 +30,6 @@ class RemoteBookDataSource {
       print("Data not found");
       return List<Map<String, dynamic>>.from({});
     }
-
   }
 
   Future<List<Map<String, dynamic>>> booksInPopularDataSource({int count = 3}) async {
@@ -50,6 +50,7 @@ class RemoteBookDataSource {
       return List<Map<String, dynamic>>.from({});
     }
   }
+
 
   Future<File> fetchPdfFromNetwork({required String fileUrl}) async {
     try {

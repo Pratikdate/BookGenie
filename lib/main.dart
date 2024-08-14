@@ -46,6 +46,8 @@ void main() async {
 
 
 class MyApp extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -58,7 +60,7 @@ class MyApp extends StatelessWidget {
                 children: [
                   Spacer(),
                   Center(
-                      child: Image.asset("asset/logo_BookGeany.png",fit: BoxFit.fill,height: 240,)
+                      child: Image.asset("asset/logo_BookGenie.png",fit: BoxFit.fill,height: 240,)
                   ),
                   const Spacer(),
                   const FontHandler(
@@ -86,7 +88,7 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 primarySwatch: Colors.blue,
               ),
-              initialRoute: authController.isAuthenticated.value
+              initialRoute: (authController.isAuthenticated.value || authController.token.value.isNotEmpty && !authController.network_state.value)
                   ? '/home'
                   : '/auth',
               initialBinding: DependencyBinding(),

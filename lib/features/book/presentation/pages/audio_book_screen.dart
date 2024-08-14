@@ -4,7 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:bookapp/features/book/presentation/controllers/audio_book_controller.dart';
 import 'package:bookapp/features/book/presentation/pages/menu_pages/animation_videos.dart';
 import 'package:flutter/material.dart';
-
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import '../../../../core/ColorHandler.dart';
 import '../../../../core/FontHandler.dart';
 
@@ -25,29 +25,57 @@ class _AudiobookScreenState extends State<AudiobookScreen> {
   final author = Get.arguments[0].author;
   final published = Get.arguments[0].published;
   final genre = Get.arguments[0].genre;
+  final audiobook_duration = Get.arguments[0].audiobook_duration;
+  final String? audiobookFile = Get.arguments[0].audiobook_file;
 
-  final AudioBookController audioBookController =
-      Get.put(AudioBookController());
+  List<String>? listAudioDuration;
+  int hours = 0;
+  int minutes = 0;
+  int seconds = 0;
 
-  //final List<String> _options = ['Male', 'Female', 'Other'];
+  final AudioBookController audioBookController = Get.put(AudioBookController());
 
   @override
   void initState() {
     super.initState();
+    print("audio book file $audiobookFile");
+
     try {
-      audioBookController.setSource(
-          "${Constants.BASE_URL}/${Get.arguments[0].audiobook_file}");
+      if (audiobookFile == null || audiobookFile!.isEmpty) {
+        throw Exception('Audiobook file is missing');
+      }
+
+      // Safely parse the audiobook duration
+      listAudioDuration = audiobook_duration.split(':');
+      if (listAudioDuration?.length == 3) {
+        hours = int.parse(listAudioDuration![0]);
+        minutes = int.parse(listAudioDuration![1]);
+        seconds = int.parse(listAudioDuration![2]);
+      } else {
+        throw Exception('Invalid duration format');
+      }
+
+      print("Time of audio: ${audiobook_duration}");
+
+      audioBookController.setSource("${Constants.BASE_URL}/$audiobookFile");
       audioBookController.initAudioPlayer();
     } catch (e) {
-      print("something went wrong in audio");
+      print("Error initializing audio: $e");
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load audiobook: $e'),backgroundColor: Colors.red,),
+        );
+      });
     }
   }
 
   Future<void> _handleMenuOption(String option, BuildContext context) async {
     switch (option) {
       case "Add Bookmark":
+      // Implement add bookmark functionality
         break;
       case "Show Bookmarks":
+      // Implement show bookmarks functionality
         break;
       case "Exit":
         Get.back();
@@ -76,7 +104,7 @@ class _AudiobookScreenState extends State<AudiobookScreen> {
                   Slider(
                     value: audioBookController.volume.value,
                     min: 0.5,
-                    max: 2.0,
+                    max: 5.0,
                     divisions: 4,
                     onChanged: audioBookController.updateVolume,
                   )
@@ -106,39 +134,6 @@ class _AudiobookScreenState extends State<AudiobookScreen> {
               );
             }),
           ),
-          // PopupMenuItem<String>(
-          //   value: "Voice",
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       const FontHandler(
-          //         'Voice',
-          //         color: ColorHandler.bgColor,
-          //         textAlign: TextAlign.left,
-          //       ),
-          //       Obx(() {
-          //         return DropdownButton<String>(
-          //           dropdownColor: getColorForGenre(genre).withOpacity(0.9),
-          //           value: audioBookController.selectedValue.value,
-          //           hint: Text('Select an option'),
-          //           items: _options.map((String option) {
-          //             return DropdownMenuItem<String>(
-          //               value: option,
-          //               child: FontHandler(
-          //                 option,
-          //                 color: ColorHandler.bgColor,
-          //                 textAlign: TextAlign.left,
-          //               ),
-          //             );
-          //           }).toList(),
-          //           onChanged: (String? newValue) {
-          //             audioBookController.selectedValue.value = newValue!;
-          //           },
-          //         );
-          //       }),
-          //     ],
-          //   ),
-          // ),
         ];
       },
       icon: const Icon(
@@ -149,7 +144,6 @@ class _AudiobookScreenState extends State<AudiobookScreen> {
   }
 
   Color getColorForGenre(String genre) {
-    // Define a map of genres to colors
     final Map<String, Color> genreColors = {
       'Romance': Colors.pink[200]!,
       'Mystery': Colors.red[800]!,
@@ -171,9 +165,7 @@ class _AudiobookScreenState extends State<AudiobookScreen> {
       'Knowledge': Color(0xFFADD8E6)
     };
 
-    // Return the color for the genre or a default color if not found
-    return genreColors[genre] ??
-        Colors.grey; // Default color if genre not found
+    return genreColors[genre] ?? Colors.grey;
   }
 
   @override
@@ -198,33 +190,32 @@ class _AudiobookScreenState extends State<AudiobookScreen> {
             height: screenHeight * 0.9,
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage(
-                    bookImage,
-                  ), // Book cover image
-                  fit: BoxFit.fill),
+                image: NetworkImage(bookImage),
+                fit: BoxFit.fill,
+              ),
             ),
           ),
-
           Align(
             alignment: Alignment.bottomCenter,
             child: InkWell(
               onTap: () {
-
                 audioBookController.thumbChange.value = false;
               },
               child: Container(
                 decoration: BoxDecoration(
                   backgroundBlendMode: BlendMode.saturation,
-                  color: getColorForGenre(genre), // Main background color
+                  color: getColorForGenre(genre),
                   boxShadow: [
                     BoxShadow(
-                        color: getColorForGenre(genre),
-                        blurRadius: 10.0,
-                        spreadRadius: 8),
+                      color: getColorForGenre(genre),
+                      blurRadius: 10.0,
+                      spreadRadius: 8,
+                    ),
                     BoxShadow(
-                        color: getColorForGenre(genre),
-                        blurRadius: 100.0,
-                        spreadRadius: 90),
+                      color: getColorForGenre(genre),
+                      blurRadius: 100.0,
+                      spreadRadius: 90,
+                    ),
                   ],
                 ),
                 alignment: Alignment.bottomCenter,
@@ -233,10 +224,9 @@ class _AudiobookScreenState extends State<AudiobookScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Align(
-                        alignment: Alignment.centerRight,
-                        child: threeDotMenuButton()),
-
-                    // Title and Artist
+                      alignment: Alignment.centerRight,
+                      child: threeDotMenuButton(),
+                    ),
                     FontHandler(
                       name,
                       color: ColorHandler.bgColor,
@@ -246,13 +236,12 @@ class _AudiobookScreenState extends State<AudiobookScreen> {
                     ),
                     SizedBox(height: 2),
                     FontHandler(
-                      "by ${author}",
+                      "by $author",
                       color: ColorHandler.bgColor,
                       textAlign: TextAlign.left,
                       fontsize: 18,
                       fontweight: FontWeight.bold,
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -290,50 +279,34 @@ class _AudiobookScreenState extends State<AudiobookScreen> {
                         Spacer(),
                       ],
                     ),
-
-                    Obx(() {
-                      return Stack(children: [
-                        Slider(
-                          activeColor: getColorForGenre(genre).withOpacity(0.9),
-                          thumbColor: ColorHandler.bgColor,
-                          value: audioBookController
-                              .currentPosition.value.inSeconds
-                              .toDouble(),
-                          max: audioBookController.totalDuration.value.inSeconds
-                              .toDouble(),
-                          onChanged: (value) {
-                            audioBookController.audioPlayer
-                                .seek(Duration(seconds: value.toInt()));
-                            audioBookController.sliderValue.value = value;
-
-                            audioBookController.thumbPosition.value =
-                                value; //*  audioBookController.sliderValue.value;
-                            audioBookController.thumbChange.value = true;
-                          },
-                        ),
-
-                        // Tooltip
-                        audioBookController.thumbChange.value
-                            ? Positioned(
-                                left: audioBookController.thumbPosition.value +
-                                    10, // Offset to center the tooltip
-                                top: 0,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 4.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(4.0),
-                                  ),
-                                  child: Text(
-                                    '${(audioBookController.sliderValue.value).toStringAsFixed(0)}%',
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              )
-                            : const SizedBox(),
-                      ]);
-                    }),
+                    if (audiobookFile != null && audiobookFile!.isNotEmpty)
+                      Obx(() {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: ProgressBar(
+                            progress: Duration(
+                              seconds: audioBookController.currentPosition.value.inSeconds.toInt(),
+                            ),
+                            total: Duration(
+                              hours: hours,
+                              minutes: minutes,
+                              seconds: seconds,
+                            ),
+                            baseBarColor: ColorHandler.bgColor,
+                            progressBarColor: getColorForGenre(genre).withOpacity(0.9),
+                            thumbColor: ColorHandler.bgColor,
+                            onSeek: (duration) {
+                              print('User selected a new time: $duration');
+                              audioBookController.audioPlayer.seek(duration);
+                              audioBookController.sliderValue.value = duration.inMinutes.toDouble();
+                              audioBookController.thumbPosition.value = duration.inMinutes.toDouble();
+                              audioBookController.thumbChange.value = true;
+                            },
+                          ),
+                        );
+                      })
+                    else
+                      SizedBox.shrink(),
                   ],
                 ),
               ),

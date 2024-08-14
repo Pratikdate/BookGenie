@@ -23,12 +23,18 @@ class AudioBookController extends GetxController {
   void initAudioPlayer() {
     audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
       print("Audio player state changed to $state");
+
       if (state == PlayerState.playing) {
         isPlaying.value = true;
+      } else if (state == PlayerState.completed) {
+        // Restart the audio when it completes
+        restartAudio();
       } else {
         isPlaying.value = false;
       }
     });
+
+
 
     audioPlayer.onDurationChanged.listen((Duration duration) {
       print("Audio duration changed to $duration");
@@ -46,6 +52,14 @@ class AudioBookController extends GetxController {
     });
   }
 
+
+  void restartAudio() {
+    // Seek to the beginning of the audio
+    audioPlayer.seek(Duration.zero);
+    // Optionally, you can also start playing immediately after seeking
+    audioPlayer.resume();
+  }
+
   void setSource(String url) {
     src.value = url;
     audioPlayer.setSource(UrlSource(src.value));
@@ -60,11 +74,11 @@ class AudioBookController extends GetxController {
   }
 
   void skipBackward() {
-    audioPlayer.seek(Duration(seconds: (currentPosition.value.inSeconds - 15).clamp(0, totalDuration.value.inSeconds)));
+    audioPlayer.seek(Duration(seconds: (currentPosition.value.inSeconds - 10).clamp(0, totalDuration.value.inSeconds)));
   }
 
   void skipForward() {
-    audioPlayer.seek(Duration(seconds: (currentPosition.value.inSeconds + 15).clamp(0, totalDuration.value.inSeconds)));
+    audioPlayer.seek(Duration(seconds: (currentPosition.value.inSeconds + 10).clamp(0, totalDuration.value.inSeconds)));
   }
 
   void updateSpeed(double value) {

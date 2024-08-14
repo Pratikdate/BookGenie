@@ -72,6 +72,8 @@ dev_dependencies:
   custom_refresh_indicator: ^4.0.1
   audioplayers: ^6.0.0
   tutorial_coach_mark: ^1.2.11
+  audio_video_progress_bar: ^2.0.3
+  connectivity_plus: ^3.0.3
 
 
 
@@ -98,8 +100,7 @@ flutter:
   assets:
      - asset/image/
      - asset/.env
-     - asset/logo_BookGeany.png
-     - asset/epic-background-orchestral-instrumental-music-for-short-videos-161639.mp3
+     - asset/logo_BookGenie.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

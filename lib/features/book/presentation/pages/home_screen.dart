@@ -106,9 +106,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   void _checkTutorialStatus() async {
-    // // Update tutorial status
-    // final prefs = await SharedPreferences.getInstance();
-    // await prefs.setBool('isTutorialShown', false);
 
     final prefs = await SharedPreferences.getInstance();
     final isTutorialShown = prefs.getBool('isTutorialShown') ?? false;
@@ -452,7 +449,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         items: [
           _tabSliderCard(
               "https://media.istockphoto.com/id/1887444772/photo/three-diverse-professional-women-in-business-attire-smiling-and-posing-in-an-office.webp?b=1&s=170667a&w=0&k=20&c=Qw3xzprj3QLKjiWJEejZI1Py6eohrsSKaX3a6fy3HrI=",
-              "Carousel Slider is one of the most popular image slider used nowadays in most apps. These Carousel Sliders are mostly seen in various eCommerce"),
+              "Science reinforces the idea that many brains are better than one. “We found that groups of size three, four, and five outperformed the best individuals,” says Dr. Patrick Laughlin a researcher at the University of Illinois at Urbana-Champaign. “[We] attribute this performance to the ability of people to work together to generate and adopt correct responses, reject erroneous responses, and effectively process information.”"),
           _tabSliderCard("https://www.ibef.org/assets/images/banking-2.jpg",
               "As per the Reserve Bank of India (RBI), India’s banking sector is sufficiently capitalised and well-regulated.")
 
@@ -893,7 +890,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             title: const Text(' Go Premium '),
             onTap: () {
               Navigator.pop(context);
-              Get.to(GoPremium());
+             // Get.to(GoPremium());
             },
           ),
 
@@ -901,6 +898,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             leading: const Icon(Icons.edit),
             title: const Text(' Write Something'),
             onTap: () {
+              Navigator.pop(context);
               //Get.to(WriteSomething());
             },
           ),

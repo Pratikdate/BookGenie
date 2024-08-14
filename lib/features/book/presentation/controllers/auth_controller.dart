@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../../core/Tokens.dart';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 
 
@@ -20,14 +21,38 @@ class AuthController extends GetxController {
   final LoginUseCase loginUseCase;
   late final SignUpUseCase signUpUseCase;
   late final AuthStatusUseCase authStatusUseCase;
+  var network_state=true.obs;
+  late final token=''.obs;
 
   AuthController({required this.loginUseCase,required this.signUpUseCase,required this.authStatusUseCase});
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    checkNetworkStatus();
+    token.value= await getToken();
     Timer(
         const Duration(seconds: 3),()=>ChackAuthStatus());
+  }
+
+
+
+  Future<void> checkNetworkStatus() async {
+    final ConnectivityResult result = await Connectivity().checkConnectivity();
+
+    if (result == ConnectivityResult.mobile) {
+      // Mobile network is available
+      print('Mobile network is available');
+      network_state(true);
+    } else if (result == ConnectivityResult.wifi) {
+      // Wi-Fi is available
+      print('Wi-Fi is available');
+      network_state(true);
+    } else {
+      // No network is available
+      print('No network is available');
+      network_state(false);
+    }
   }
 
   Future<void> login(String email, String password) async {
