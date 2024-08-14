@@ -3,15 +3,11 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
-
     <application
-        android:label="bookapp"
+        android:label="BookGenie"
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"
-        android:icon="@mipmap/ic_launcher">
-
-
+        android:icon="@mipmap/logo_bookgenie">
 
         <activity
             android:name=".MainActivity"
