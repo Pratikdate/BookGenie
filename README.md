@@ -36,6 +36,6 @@ In an era where digital technology has transformed our lives, traditional readin
 
 ## 👥  Contributors
 
-|[Pooja Bhor](https://github.com/poojab2805)|[Aadi Harale ](https://github.com/coolss21)| [Pratik Date](https://github.com/Pratikdate) 
+|[Shanacoder](https://github.com/shanacoder)|[Pooja Bhor](https://github.com/poojab2805)|[Aadi Harale ](https://github.com/coolss21)| [Pratik Date](https://github.com/Pratikdate) 
 |---|---|---|---|
-|<img src="https://avatars.githubusercontent.com/u/163244933?v=4" style="width: 200px;">|<img src="https://avatars.githubusercontent.com/u/111411922?v=4" style="width: 200px;">|<img src="https://avatars.githubusercontent.com/u/152193056?v=4" style="width: 200px;">|<img src="https://avatars.githubusercontent.com/u/91735895?v=4" style="width: 200px;">
+|<img src="https://avatars.githubusercontent.com/u/162150179?s=200&v=4" style="width: 200px;">|<img src="https://avatars.githubusercontent.com/u/111411922?v=4" style="width: 200px;">|<img src="https://avatars.githubusercontent.com/u/152193056?v=4" style="width: 200px;">|<img src="https://avatars.githubusercontent.com/u/91735895?v=4" style="width: 200px;">
